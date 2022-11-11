@@ -6,6 +6,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import useToast from "../components/useToast";
 import Server from '../services/server';
+import Cookies from "universal-cookie";
 
 const validationSchema = yup.object({
     email: yup
@@ -38,7 +39,10 @@ const Signin = () => {
             }
             else {
                 showToast("Success", 'success');
-                // add token to cookie
+                const cookies = new Cookies();
+                cookies.set('jwt', res.data.token, {maxAge: 2592000 * 12}); // 1 year
+                console.log(res.data.token);
+                setTimeout(() => window.location.href = '/home', 2000);
             }
         },
     });

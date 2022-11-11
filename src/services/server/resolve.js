@@ -6,9 +6,10 @@ const resolve = async (promise) => {
     };
   
     try {
-      resolved.data = await promise;
+      const res = await promise;
+      console.log(res);
+      resolved.data = res;
     } catch(e) {
-      console.log('resole ', e);
       resolved.error = e;
       resolved.errorMessage = typeof e.response.data.message === 'string' ? e.response.data.message : "Internal error";
     }

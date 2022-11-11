@@ -57,7 +57,7 @@ const Signup = () => {
             }
             else {
                 showToast("Success", 'success');
-                // add token to cookie
+                setTimeout(() => window.location.href = '/signin', 2000);
             }
         },
     });
