@@ -3,8 +3,10 @@ import Footer from "../components/Footer";
 import * as yup from 'yup';
 import { useFormik } from "formik";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useToast from "../components/useToast";
+import Server from '../services/server';
+import Auth from '../services/server/auth';
 
 const validationSchema = yup.object({
     firstName: yup
@@ -46,8 +48,17 @@ const Signup = () => {
             confirmPassword: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async (values) => {
+            // delete values.confirmPassword;
+            const res = await Server.Auth.signUp(values);
+            console.log(res);
+            if(res.error) {
+                showToast(res.errorMessage, 'error');
+            }
+            else {
+                showToast("Success", 'success');
+                // add token to cookie
+            }
         },
     });
 
@@ -83,6 +94,7 @@ const Signup = () => {
                             size="small"
                             name="firstName"
                             fullWidth
+                            autoComplete="off"
                             placeholder="Last name"
                             value={formik.values.firstName}
                             onChange={formik.handleChange}
@@ -95,6 +107,7 @@ const Signup = () => {
                             size="small"
                             name="lastName"
                             fullWidth
+                            autoComplete="off"
                             placeholder="First name"
                             value={formik.values.lastName}
                             onChange={formik.handleChange}
@@ -107,6 +120,7 @@ const Signup = () => {
                             size="small"
                             name="email"
                             fullWidth
+                            autoComplete="off"
                             placeholder="Email"
                             value={formik.values.email}
                             onChange={formik.handleChange}
@@ -119,7 +133,7 @@ const Signup = () => {
                             size="small"
                             name="password"
                             fullWidth
-                            autoFocus
+                            autoComplete="off"
                             placeholder="Password"
                             type={showPassword ? "text" : "password"}
                             value={formik.values.password}
@@ -146,7 +160,7 @@ const Signup = () => {
                             size="small"
                             name="confirmPassword"
                             fullWidth
-                            autoFocus
+                            autoComplete="off"
                             type={showConfirmPassword ? "text" : "password"}
                             placeholder="Confirm password"
                             value={formik.values.confirmPassword}
