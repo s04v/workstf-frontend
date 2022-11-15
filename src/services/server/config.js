@@ -3,7 +3,6 @@ import Cookies from "universal-cookie";
 
 const Http = axios.create({
     baseURL: `http://localhost:3001`,
-    // baseURL: `https://character-dao.herokuapp.com`,
     timeout: 5000,
 });
 

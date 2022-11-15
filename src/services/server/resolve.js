@@ -7,7 +7,6 @@ const resolve = async (promise) => {
   
     try {
       const res = await promise;
-      console.log(res);
       resolved.data = res;
     } catch(e) {
       resolved.error = e;
