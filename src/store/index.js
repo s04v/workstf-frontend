@@ -5,6 +5,6 @@ import contactsSlice from './contactsSlice';
 export const store = configureStore({
   reducer: {
     account: accountReducer,
-    contact: contactsSlice,
+    contacts: contactsSlice,
   },
 });

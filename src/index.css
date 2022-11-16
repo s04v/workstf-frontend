@@ -8,7 +8,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100% !important;
+  min-height: 100vh;
+  /* height: auto !important;   */
 }
 
 code {
@@ -22,11 +23,11 @@ a {
 }
 
 #root{
-  height: 100%; 
+  min-height: 100vh; 
 }
 
 .App {
-  height: 100%
+  min-height: 100vh;
 }
 
 .MuiOutlinedInput-notchedOutline {
@@ -41,14 +42,23 @@ a {
 .MuiInputBase-root {
   font-size: 14px !important;
 }
-.MuiTextField-root {
-  /* border-color: white;
-  outline-style: none;
-  box-shadow: 0px 3px 5px -1px #e0e0e0;
-  outline: 'none';
-  border-radius: 10px; */
+
+.MuiTable-root {
+  box-shadow: none;
+  border: 0;
 }
 
+.MuiTableHead-root th{ 
+  color: grey !important; 
+}
 
+.MuiTableHead-root tr { 
+  padding: 0;
+}
+
+.MuiTableCell {
+  padding: 0;
+  margin: 0;
+}
 
 

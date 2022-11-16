@@ -4,9 +4,8 @@ import * as yup from 'yup';
 import { useFormik } from "formik";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
-import useToast from "../components/useToast";
 import Server from '../services/server';
-import Auth from '../services/server/auth';
+import useAlert from "../utils/useAlert";
 
 const validationSchema = yup.object({
     firstName: yup
@@ -35,9 +34,9 @@ const validationSchema = yup.object({
   
 
 const Signup = () => {
+    const { setAlert } = useAlert();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [Toast, showToast] = useToast();
     
     const formik = useFormik({
         initialValues: {
@@ -51,13 +50,12 @@ const Signup = () => {
         onSubmit: async (values) => {
             // delete values.confirmPassword;
             const res = await Server.Auth.signUp(values);
-            console.log(res);
             if(res.error) {
-                showToast(res.errorMessage, 'error');
+                setAlert(res.errorMessage, 'error');
             }
             else {
-                showToast("Success", 'success');
-                setTimeout(() => window.location.href = '/signin', 2000);
+                setAlert("Success", 'success');
+                setTimeout(() => window.location.href = '/signin', 1000);
             }
         },
     });
@@ -68,10 +66,9 @@ const Signup = () => {
             display: 'flex',
             flexDirection: 'column', 
             alignItems: 'center',
-            height: '100%'
+            height: '100vh'
         }}
         >
-            {Toast }
             <img src="./workstf-logo.svg" alt="" />
             <Box sx={{
                 width:  '100%',

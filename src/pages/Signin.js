@@ -4,9 +4,9 @@ import * as yup from 'yup';
 import { useFormik } from "formik";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
-import useToast from "../components/useToast";
 import Server from '../services/server';
 import Cookies from "universal-cookie";
+import useAlert from "../utils/useAlert";
 
 const validationSchema = yup.object({
     email: yup
@@ -21,8 +21,8 @@ const validationSchema = yup.object({
   
 
 const Signin = () => {
+    const { setAlert } = useAlert();
     const [showPassword, setShowPassword] = useState(false);
-    const [Toast, showToast] = useToast();
     
     const formik = useFormik({
         initialValues: {
@@ -33,16 +33,14 @@ const Signin = () => {
         onSubmit: async (values) => {
             // delete values.confirmPassword;
             const res = await Server.Auth.signIn(values);
-            console.log(res);
             if(res.error) {
-                showToast(res.errorMessage, 'error');
+                setAlert(res.errorMessage, 'error');
             }
             else {
-                showToast("Success", 'success');
+                setAlert("Success", 'success');
                 const cookies = new Cookies();
                 cookies.set('jwt', res.data.token, {maxAge: 2592000 * 12}); // 1 year
-                console.log(res.data.token);
-                setTimeout(() => window.location.href = '/home', 2000);
+                setTimeout(() => window.location.href = '/home', 1000);
             }
         },
     });
@@ -54,10 +52,9 @@ const Signin = () => {
             flexDirection: 'column', 
             alignItems: 'center',
             justifyContent: 'center',
-            height: '100%'
+            height: '100vh'
         }}
         >
-            {Toast }
             <img src="./workstf-logo.svg" alt="" />
             <Box sx={{
                 width:  '50%',
@@ -103,7 +100,6 @@ const Signin = () => {
                                       aria-label="toggle password visibility"
                                       onClick={() => setShowPassword(!showPassword)}
                                     >
-                                        
                                       {!showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                                   </InputAdornment>
