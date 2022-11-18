@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import Server from "../services/server";
-import { updateContacts, updateTotal } from "../store/contactsSlice";
+import { setSelectedContacts, updateContacts, updateTotal } from "../store/contactsSlice";
 import countryList from "react-select-country-list";
 import useAlert from "../utils/useAlert";
 
@@ -72,6 +72,7 @@ const EditModal = ({open, onClose}) => {
                 const res = await Server.Contact.get(contacts.skip, contacts.take);
                 dispatch(updateContacts(res.data.contacts));
                 dispatch(updateTotal(res.data.totalCount));
+                dispatch(setSelectedContacts([]));
                 setProperty('none')
                 onClose();
             }
