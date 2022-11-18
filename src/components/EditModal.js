@@ -62,11 +62,11 @@ const EditModal = ({open, onClose}) => {
         initialValues: contactToEdit,
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            const id = values.id;
+            const id = values._id;
+            delete values._id;
             const res = await Server.Contact.update(id, values);
             if(res.error) {
                 setAlert(res.errorMessage, 'error');
-            
             } else {
                 setAlert("Success", 'success');
                 const res = await Server.Contact.get(contacts.skip, contacts.take);

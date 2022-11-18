@@ -41,6 +41,7 @@ const CreateDrawer = ({open, onClose}) => {
     const countries = useMemo(() => countryList().getData(), []);
 
     const formik = useFormik({
+        enableReinitialize: true,
         initialValues: {
             firstName: '',
             lastName: '',
@@ -59,6 +60,7 @@ const CreateDrawer = ({open, onClose}) => {
                 const res = await Server.Contact.get(contacts.skip, contacts.take);
                 dispatch(updateContacts(res.data.contacts));
                 dispatch(updateTotal(res.data.totalCount));
+                formik.handleReset();
                 onClose();
             }
         },

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
 import AppsIcon from '@mui/icons-material/Apps';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -41,16 +42,16 @@ const Home = () => {
             setSelected([]);
             dispatch(setSelectedContacts([]));
         } else {
-            const allContactId = contacts.data.map((item) => item.id);
+            const allContactId = contacts.data.map((item) => item._id);
             dispatch(setSelectedContacts(allContactId));
         }
     };
 
     const handleSelect = (contact) => {
-        if(!isSelected(contact.id)) {
-            dispatch(setSelectedContacts([...contacts.selectedContacts, contact.id]));
+        if(!isSelected(contact._id)) {
+            dispatch(setSelectedContacts([...contacts.selectedContacts, contact._id]));
         } else {
-            const newSelected = selected.filter((selectedId) => selectedId !== contact.id);  
+            const newSelected = contacts.selectedContacts.filter((selectedId) => selectedId !== contact._id);  
             dispatch(setSelectedContacts(newSelected));
         }
     };
@@ -58,8 +59,7 @@ const Home = () => {
     useEffect(() => {
         async function fetchData() {
             const res = await Server.Acconut.getInfo();
-            delete res.data[0].password;
-            dispatch(updateAccount(res.data[0]));
+            dispatch(updateAccount(res.data));
         }
         fetchData();
         fetchContacts();
@@ -86,7 +86,7 @@ const Home = () => {
             return;
         }
 
-        const contact = contacts.data.filter(item => item.id === contacts.selectedContacts[0])[0];
+        const contact = contacts.data.filter(item => item._id === contacts.selectedContacts[0])[0];
         dispatch(setContactToEdit(contact));
         setOpenEdit(true);
     }
@@ -101,9 +101,7 @@ const Home = () => {
     }
     
     const handleChangePage = (e, newPage) => {
-        console.log('newPage',newPage);
         setPage(newPage);
-        console.log(newPage * rowsPerPage);
         dispatch(updateSkip(newPage * rowsPerPage));
     }
 
@@ -208,20 +206,19 @@ const Home = () => {
                                 />
                                 </TableCell>
                             
-                                <TableCell sx={{width: '15%'}}>Name</TableCell>
-                                <TableCell >Amount</TableCell>
-                                <TableCell >Account</TableCell>
-                                <TableCell >Owner</TableCell>
-                                <TableCell >Created Date</TableCell>
-                                <TableCell >Close Date</TableCell>
-                                <TableCell >Region</TableCell>
-                                <TableCell >Stage</TableCell>
-                                <TableCell >Probability</TableCell>
+                                <TableCell >First name</TableCell>
+                                <TableCell >Last name</TableCell>
+                                <TableCell >Email</TableCell>
+                                <TableCell >Phone number</TableCell>
+                                <TableCell >Create date</TableCell>
+                                <TableCell >Modified date</TableCell>
+                                <TableCell >Country</TableCell>
+                                <TableCell >Company</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody sx={{position: 'relative'}}>
                             {contacts.data.map((contact) => {
-                                const isContactSelected = isSelected(contact.id);
+                                const isContactSelected = isSelected(contact._id);
                                 return <TableRow sx={{padding: 4}}>
                                             <TableCell padding="checkbox">
                                             <Checkbox
@@ -234,14 +231,13 @@ const Home = () => {
                                             />
                                             </TableCell>
                                             <TableCell>{contact.firstName}</TableCell>
-                                            <TableCell>$1000</TableCell>
+                                            <TableCell>{contact.lastName}</TableCell>
+                                            <TableCell>{contact.email}</TableCell>
+                                            <TableCell>{contact.phoneNumber}</TableCell>
+                                            <TableCell><span style={{padding: 3, backgroundColor: '#f7f7f7', borderRadius: '20px'}}>{new Date(contact.createDate).toLocaleDateString("en-US")} {new Date(contact.createDate).toLocaleTimeString("en-US", {hour: 'numeric', minute: 'numeric'})}</span></TableCell>
+                                            <TableCell><span style={{padding: 3, backgroundColor: '#f7f7f7', borderRadius: '20px'}}>{new Date(contact.updateDate).toLocaleDateString("en-US")} {new Date(contact.updateDate).toLocaleTimeString("en-US", {hour: 'numeric', minute: 'numeric'})}</span></TableCell>
+                                            <TableCell>{contact.country}</TableCell>
                                             <TableCell>{contact.company}</TableCell>
-                                            <TableCell sx={{display: 'flex', gap: 1}}><Box sx={{width:'20px', height: '20px', borderRadius: '50%', backgroundColor: '#d1cece'}}></Box>You</TableCell>
-                                            <TableCell ><span style={{padding: 3, backgroundColor: '#f7f7f7', borderRadius: '20px'}}>{new Date(contact.createdDate).toLocaleDateString("en-US")}</span></TableCell>
-                                            <TableCell ><span style={{padding: 3, backgroundColor: '#f7f7f7', borderRadius: '20px'}}>{contact.closeDate}</span></TableCell>
-                                            <TableCell >{contact.country}</TableCell>
-                                            <TableCell >Running</TableCell>
-                                            <TableCell >100%</TableCell>
                                         </TableRow>
                                 })
                             }

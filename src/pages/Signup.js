@@ -6,6 +6,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import Server from '../services/server';
 import useAlert from "../utils/useAlert";
+import Cookies from "universal-cookie";
 
 const validationSchema = yup.object({
     firstName: yup
@@ -48,14 +49,16 @@ const Signup = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            // delete values.confirmPassword;
+            delete values.confirmPassword;
             const res = await Server.Auth.signUp(values);
             if(res.error) {
                 setAlert(res.errorMessage, 'error');
             }
             else {
                 setAlert("Success", 'success');
-                setTimeout(() => window.location.href = '/signin', 1000);
+                const cookies = new Cookies();
+                cookies.set('jwt', res.data.token, {maxAge: 2592000 * 12}); // 1 year
+                setTimeout(() => window.location.href = '/home', 1000);
             }
         },
     });
