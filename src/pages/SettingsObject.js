@@ -77,15 +77,15 @@ const SettingsObject= () => {
 
                                 </Box>
                                 <Box sx={{position: "relative"}}>
-                                    <span style={{borderBottom: "1px solid blue", padding: "10px", color: "blue", fontSize: "14px"}}>Configuration</span>
+                                    <Box style={{borderBottom: "1px solid black", padding: "10px", color: "primary", fontSize: "14px", width: '85px'}}>Configuration</Box>
                                 </Box>
                             </Box>
-                            <Divider sx={{mt:"10px"}} />
+                            <Divider sx={{mt:"0px"}} />
                             <Typography sx={{fontSize: "14px", color: "grey", px: "30px", py: "20px"}}>Choose what information you collect about your object and how to keep your records updated.</Typography>
                             <Divider />
                             <Box sx={{px: "30px"}}>
                                 <Typography sx={{fontSize: "14px", my: "20px"}}><b>Records</b></Typography>
-                                <Typography sx={{fontSize: "14px", mb: "10px", color: "blue"}}><Link to="/settings/fields"><b>Manage {activeObject?.singularName} fields</b></Link></Typography>
+                                <Typography sx={{fontSize: "14px", mb: "10px"}}><Link to="/settings/fields"><b style={{color: '#0a636d'}}>Manage {activeObject?.singularName} fields</b></Link></Typography>
                                 <Typography sx={{fontSize: "12px", color: "grey"}}>Manage the information you collect about your object</Typography>
                             </Box>
                         </Box>

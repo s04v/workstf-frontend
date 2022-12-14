@@ -17,9 +17,11 @@ const NestedSettingsMenu = () => {
                     Objects
                 </Typography>
                 <Collapse in={openObject}>
-                    <Typography sx={{backgroundColor: ( location.pathname === '/settings' ? "#eaeaeae3" : null ), padding: 1, pl: 5, borderRadius: "40px", cursor: "pointer", my: 1}}>
-                        <Link to="/settings"> Custom Object</Link>
-                    </Typography>
+                    <Link to="/settings">
+                        <Typography sx={{backgroundColor: ( location.pathname === '/settings' ? "#eaeaeae3" : null ), padding: 1, pl: 5, borderRadius: "40px", cursor: "pointer", my: 1, color: "primary.main"}}>
+                            Custom Objects
+                        </Typography>
+                    </Link>
                 </Collapse>
             </Box>
             <Box>   
@@ -33,9 +35,11 @@ const NestedSettingsMenu = () => {
                 </Collapse>
             </Box>
             <Box>   
-                <Typography sx={{backgroundColor: ( location.pathname === '/settings/fields' ? "#eaeaeae3" : null ), display: "flex", alignItems: "center", borderRadius: "40px", cursor: "pointer",  padding: 1, pl: 2}}>
-                    <Link to="/settings/fields">Fields</Link>
-                </Typography>
+                <Link to="/settings/fields">
+                    <Typography sx={{backgroundColor: ( location.pathname === '/settings/fields' ? "#eaeaeae3" : null ), display: "flex", alignItems: "center", borderRadius: "40px", cursor: "pointer",  padding: 1, pl: 2, color: "primary.main"}}>
+                        Fields
+                    </Typography>
+                </Link>
                 
             </Box>
         </Box>

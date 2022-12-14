@@ -118,10 +118,10 @@ const SettingsFields = () => {
                 </TextField>
                 </Box>
                 <Box sx={{position: "relative"}}>
-                    <span style={{borderBottom: "1px solid blue", padding: "10px", color: "blue", fontSize: "14px"}}>Configuration</span>
+                    <Typography style={{borderBottom: "1px solid black", padding: "10px", color: "blue", fontSize: "14px", color: "primary.main", width: "85px"}}>Configuration</Typography>
                 </Box>
             </Box>
-            <Divider sx={{mt:"10px"}} />
+            <Divider/>
             <Typography sx={{fontSize: "14px", color: "grey", px: "30px", py: "20px"}}>Choose what information you collect about your object and how to keep your records updated.</Typography>
             <Divider />
             <Box sx={{height: '100%'}}>
@@ -227,9 +227,6 @@ const SettingsFields = () => {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                             />
-                    {/* <EditModal open={openEdit} onClose={() => setOpenEdit(false)} />
-                    <DeleteModal open={openDelete} onClose={() => setOpenDelete(false)} />
-                    <CreateDrawer open={openCreate} onClose={() => setOpenCreate(false)} /> */}
             </Box>
             </Box>
             <DeleteFieldsModal open={openDelete} onClose={() => setOpenDelete(false)} />
