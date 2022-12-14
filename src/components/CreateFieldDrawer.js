@@ -183,10 +183,8 @@ const CreateFieldDrawer = ({open, onClose, edit, initValues}) => {
                         <MenuItem value="number">Number</MenuItem>
                         <MenuItem value="boolean">Boolean</MenuItem>
                         <MenuItem value="dropdown">Dropdown</MenuItem>
-                        <MenuItem value="checkbox">Checkbox</MenuItem>
                         <MenuItem value="multipleCheckboxes">Multiple Checkboxes</MenuItem>
                         <MenuItem value="date">Date</MenuItem>
-                        <MenuItem value="time">Time</MenuItem>
                       </TextField>
                     </Box>
                   </Box>

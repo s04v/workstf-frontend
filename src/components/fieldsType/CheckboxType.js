@@ -20,19 +20,20 @@ const CheckboxType = (props) => {
   
   const makeLabel = () => {
    const labels = props.data.map(item => props.value[item][0] ? item : null).filter(item => item !== null);
-   console.log(props);
+   console.log(labels);
 
    return labels.join('; ');
   }
 
   const makePreviewLabel = () => {
-    const labels = checkboxStates.map(item => item ? item.label : null).filter(item => item !== null);
+    const labels = checkboxStates.map(item => item.checked ? item.label : null).filter(item => item !== null);
+    console.log(checkboxStates);
     return labels.join('; ');
   }
 
   return (
     <Box>
-      {props.preview && <Typography>Dropdown</Typography>}
+      {props.preview && <Typography>Checkbox</Typography>}
       <TextField
         fullWidth
         select 
