@@ -48,8 +48,8 @@ const CreateObjectDrawer = ({open, onClose}) => {
             } else {
                 setAlert("Success", 'success');
                 const res = await Server.Object.getList();
-                const objectNames = res.data.map(object => object.singularName);
-                dispatch(updateObjectList(objectNames));
+                // const objectNames = res.data.map(object => object.singularName);
+                dispatch(updateObjectList(res.data));
                 formik.handleReset();
                 onClose();
             }
