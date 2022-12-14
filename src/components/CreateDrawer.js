@@ -81,7 +81,7 @@ const CreateDrawer = ({open, onClose}) => {
             <Box sx={{
                 display: 'flex',
                 gap: 2,
-                backgroundColor: 'blue',
+                backgroundColor: 'primary.main',
                 px: 4,
                 py: 2,
                 color: 'white'

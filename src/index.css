@@ -18,7 +18,6 @@ code {
 }
 
 a {
-  color: blue !important;
   text-decoration: none;
 }
 
@@ -61,4 +60,18 @@ a {
   margin: 0;
 }
 
+.MenuIcon {
+  margin-top: 3px;
+  background-color: 'primary.main';
+  padding: 5px;
+  border-radius: 50%;
+  color: white;
+}
 
+.MuiAccordion-root {
+  box-shadow: none !important;
+}
+
+.MuiMenu-list {
+  padding-bottom: 0 !important
+}

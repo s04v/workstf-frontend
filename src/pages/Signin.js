@@ -55,7 +55,7 @@ const Signin = () => {
             height: '100vh'
         }}
         >
-            <img src="./workstf-logo.svg" alt="" />
+            <img src="./workstf.png" alt="" style={{width: '200px'}}/>
             <Box sx={{
                 width:  '50%',
                 display: 'flex',

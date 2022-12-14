@@ -8,6 +8,11 @@ import Server from "../services/server";
 import { setSelectedContacts, updateContacts, updateTotal } from "../store/contactsSlice";
 import countryList from "react-select-country-list";
 import useAlert from "../utils/useAlert";
+import BooleanType from "./fieldsType/BooleanType";
+import DropdownType from "./fieldsType/DropdownType";
+import CheckboxType from "./fieldsType/CheckboxType";
+import DateType from "./fieldsType/DateType";
+import { updateRecords, updateRecordTotal, updateSelectedRecord } from "../store/appSlice";
 
 const validationSchema = yup.object({
     firstName: yup
@@ -45,13 +50,13 @@ const style = {
     border: 0
   };
 
-const EditModal = ({open, onClose}) => {
+const EditRecordModal = ({open, onClose}) => {
     const { setAlert } = useAlert();
     const dispatch = useDispatch();
-    const contactToEdit = useSelector(state => state.contacts.contactToEdit);
-    const contacts = useSelector(state => state.contacts);
-    const countries = useMemo(() => countryList().getData(), []);
-    const [property, setProperty] = useState('none');
+    const [property, setProperty] = useState(null);
+    const [activeType, setActiveType] = useState('');
+    const app = useSelector(state => state.app);
+    const recordToEdit = useSelector(state => state.app.recordToEdit);
 
     const handleChange = (e) => {
         setProperty(e.target.value);
@@ -59,20 +64,19 @@ const EditModal = ({open, onClose}) => {
 
     const formik = useFormik({
         enableReinitialize: true,
-        initialValues: contactToEdit,
-        validationSchema: validationSchema,
+        initialValues: recordToEdit?.data,
+        // validationSchema: validationSchema,
         onSubmit: async (values) => {
-            const id = values._id;
-            delete values._id;
-            const res = await Server.Contact.update(id, values);
+            const updatedRecord = {...recordToEdit, data: values};
+            const res = await Server.Object.updateRecord(recordToEdit.objectId, updatedRecord);
             if(res.error) {
                 setAlert(res.errorMessage, 'error');
             } else {
                 setAlert("Success", 'success');
-                const res = await Server.Contact.get(contacts.skip, contacts.take);
-                dispatch(updateContacts(res.data.contacts));
-                dispatch(updateTotal(res.data.totalCount));
-                dispatch(setSelectedContacts([]));
+                const updatedList = await Server.Object.getRecords(recordToEdit.objectId, app.skip, app.take);
+                dispatch(updateRecords(updatedList.data.data));
+                dispatch(updateRecordTotal(updatedList.data.total));
+                dispatch(updateSelectedRecord([]));
                 setProperty('none')
                 onClose();
             }
@@ -83,6 +87,48 @@ const EditModal = ({open, onClose}) => {
         formik.handleReset();
         setProperty('none')
         onClose();
+    }
+
+    const renderField = (type, name, value, onChange) => {
+        let field = null;
+        switch(type) {
+            case 'text':
+            case 'number':
+                field = <TextField 
+                    fullWidth 
+                    sx={{mb: 2}}
+                    autoComplete="off"
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                />;
+                break;     
+            case 'boolean':
+                field = <BooleanType name={name} value={value} onChange={onChange} />;
+                break;
+            case 'dropdown':
+                const dropdown = app.object.schema.filter(item => item.name == name)[0];
+                field = <DropdownType name={name} value={value} onChange={onChange} data={dropdown.labels} />;
+                break;
+            case 'multipleCheckboxes':
+                field = <CheckboxType name={name} value={value} onChange={onChange} data={Object.keys(value)} />;
+                break;
+            case 'date':
+                field = <DateType name={name} value={value} onChange={onChange} />;
+                break;
+            default:
+                return null;
+        }
+
+        return <Box sx={{display: 'flex', justifyContent: 'center', mt: 2, mb: 3, px: 4, py: 6}}>
+            {field}
+        </Box>
+    }
+
+    const test = () => {
+        console.log('recordToEdit', app.recordToEdit);
+        console.log('object', app.object);
+        console.log('activeType', activeType);
     }
 
     return (
@@ -101,7 +147,7 @@ const EditModal = ({open, onClose}) => {
                     display: 'flex',
                     justifyContent:'space-between'
                 }}>
-                    <b>Edit property</b> <CloseIcon sx={{fontSize:'24px', cursor: 'pointer'}} onClick={handleClose}/>
+                    <b onClick={test}>Edit property</b> <CloseIcon sx={{fontSize:'24px', cursor: 'pointer'}} onClick={handleClose}/>
                 </Box>
                 <Box sx={{
                     padding: 3,
@@ -118,30 +164,24 @@ const EditModal = ({open, onClose}) => {
                             sx={{mb: 2}}
                         >
                             <MenuItem value={'none'}>Select property to edit</MenuItem>
-                            <MenuItem value={'firstName'}>First name</MenuItem>
-                            <MenuItem value={'lastName'}>Last name</MenuItem>
-                            <MenuItem value={'email'}>Email</MenuItem>
-                            <MenuItem value={'phoneNumber'}>Phone number</MenuItem>
-                            <MenuItem value={'company'}>Company</MenuItem>
-                            <MenuItem value={'country'}>Country</MenuItem>
+                            <MenuItem onClick={() => setActiveType(app.object.primaryType)} value={app.object.primaryName}>{app.object.primaryName}</MenuItem>
+                            {app.object.schema?.map(field =>  <MenuItem onClick={() => setActiveType(field.type)} value={field.name}>{field.name}</MenuItem>)}
                         </Select>
-                       
-                            {property !== 'none'&& property !== 'country' && 
-                                <TextField 
-                                fullWidth 
-                                sx={{mb: 2}}
-                                autoComplete="off"
-                                name={property}
-                                value={formik.values[property]}
-                                onChange={formik.handleChange}
-                                error={formik.touched[property] && Boolean(formik.errors[property])}
-                                helperText={formik.touched[property] && formik.errors[property]}
-                            />
+                        {/* {console.log(formik.values)} */}
+                            {property !== 'none' && ( formik.values && renderField(activeType, property, formik.values[property], formik.handleChange))
+                            //     <TextField 
+                            //     fullWidth 
+                            //     sx={{mb: 2}}
+                            //     autoComplete="off"
+                            //     name={property}
+                            //     value={formik.values[property]}
+                            //     onChange={formik.handleChange}
+                            //     error={formik.touched[property] && Boolean(formik.errors[property])}
+                            //     helperText={formik.touched[property] && formik.errors[property]}
+                            // />
         
                             }
-                            {property === 'country' && <TextField autoComplete="off" select name={property} value={formik.values.country} onChange={formik.handleChange} fullWidth  sx={{my: 3}}> 
-                                {countries.map(country => <MenuItem key={country.value} value={country.label}>{country.label}</MenuItem>)}
-                            </TextField>}
+                            
                         
                         </Box>
                     <Button type="submit" variant="contained" sx={{px: 4, py: 1, mr: 2, fontSize: 12}}><b>Update</b></Button>
@@ -154,4 +194,4 @@ const EditModal = ({open, onClose}) => {
     );
 }
 
-export default EditModal;
+export default EditRecordModal;

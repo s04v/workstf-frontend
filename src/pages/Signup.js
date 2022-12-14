@@ -72,7 +72,7 @@ const Signup = () => {
             height: '100vh'
         }}
         >
-            <img src="./workstf-logo.svg" alt="" />
+            <img src="./workstf.png" alt="" style={{width: '200px'}} />
             <Box sx={{
                 width:  '100%',
                 display: 'flex',
@@ -193,8 +193,8 @@ const Signup = () => {
                 <Box sx={{
                     width:  '50%',
                 }}>
-                    <img src="customer-image-compiled1_2x.png" alt="" style={{width: '100%'}} />
-                    <Typography align="center" color="#0014ff" sx={{fontWeight:"500"}}><b>Workstf's CRM is 100% free.</b></Typography>
+                    <img src="employee.png" alt="" style={{width: '100%'}} />
+                    <Typography align="center" color="primary.main" sx={{fontWeight:"500"}}><b>Workstf's CRM is 100% free.</b></Typography>
                     <Typography align="center" fontSize={12} color="grey">No credit cart needed.</Typography>
                 </Box>
             </Box>
