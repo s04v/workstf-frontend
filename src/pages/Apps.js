@@ -23,7 +23,7 @@ const Apps = (props) => {
     const params = useParams();
     const id = params.id;
     
-    const contacts = useSelector(state => state.contacts);
+    const account = useSelector(state => state.contacts);
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -34,7 +34,6 @@ const Apps = (props) => {
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openCreate, setOpenCreate] = useState(false);
-
     const testID = "639921443e84b5b052cc9708";
     // -----
 
@@ -43,6 +42,7 @@ const Apps = (props) => {
 
     const fetchObject = async () => {
       const appName = params.appName;
+      const userId = params.appName;
       const res = await Server.Object.getByAppName(appName);
       console.log('fetchData', res);
       if(res.error) {
@@ -177,7 +177,7 @@ const Apps = (props) => {
       <Box key={props.key} sx={{mt: 4, mb: 4, display: 'flex', height: '100%', gap: 4, position: 'relative'}}>
         <Box sx={{width: "200px"}}>
             {
-              app.objectList?.map(object => <Typography sx={{textAlign: 'center',mb: 2, color: 'black', backgroundColor: (id === object.id ? '#e4e4e4': null), borderRadius: '40px', py:1 }}><Link to={`/apps/${params.appName}/${object.id}`}>{object.name}</Link></Typography>)
+              app.objectList?.map(object => <Typography sx={{textAlign: 'center',mb: 2, color: 'black', backgroundColor: (id === object.id ? '#e4e4e4': null), borderRadius: '40px', py:1 }}><Link to={`/${params.appName}/${params.userId}/${object.id}`}>{object.name}</Link></Typography>)
             }
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', padding: '20px', width: '100%'}}>

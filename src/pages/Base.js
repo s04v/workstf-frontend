@@ -25,6 +25,7 @@ const BasePage = (props) => {
     }
 
     useEffect(() => {
+        console.log('account', account);
         const cookies = new Cookies();
         const token = cookies.get('jwt');
         console.log(token);
@@ -42,13 +43,13 @@ const BasePage = (props) => {
     const makeHeader = () => {
         if(location.pathname.startsWith('/home')) 
             return "Home";
-        if(location.pathname.startsWith('/apps/sales')) {
+        if(location.pathname.startsWith('/sales')) {
             if(activeObject?.singularName) {
                 return "Sales > " + activeObject.singularName;
             }
             return "Sales";
         }
-        if(location.pathname.startsWith('/apps/crm')){
+        if(location.pathname.startsWith('/crm')){
             if(activeObject?.singularName) {
                 return "CRM > " + activeObject.singularName;
             }
@@ -90,12 +91,12 @@ const BasePage = (props) => {
                 {location.pathname.startsWith("/apps/crm") ? 
                     <PersonOutlineIcon  sx={{mt:3, backgroundColor: '#f07d24', padding: '10px', borderRadius: '50%', color: 'white'}} />
                     :
-                    <a href="/apps/crm"><PersonOutlineIcon  sx={{mt:3, backgroundColor: '#f07d24', padding: '10px', borderRadius: '50%', color: 'white'}} /></a>
+                    <a href={`/crm/${account._id}`}><PersonOutlineIcon  sx={{mt:3, backgroundColor: '#f07d24', padding: '10px', borderRadius: '50%', color: 'white'}} /></a>
                 }
                 {location.pathname.startsWith("/apps/sales") ? 
                     <WorkOutlineIcon  sx={{mt:3, backgroundColor: '#d01f22', padding: '10px', borderRadius: '50%', color: 'white'}} />
                     :
-                    <a href="/apps/sales"><WorkOutlineIcon  sx={{mt:3, backgroundColor: '#d01f22', padding: '10px', borderRadius: '50%', color: 'white'}} /></a>
+                    <a href={`/sales/${account._id}`}><WorkOutlineIcon  sx={{mt:3, backgroundColor: '#d01f22', padding: '10px', borderRadius: '50%', color: 'white'}} /></a>
                 }
             </Box>
             <Box sx={{
