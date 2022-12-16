@@ -28,21 +28,16 @@ const BasePage = (props) => {
     }
 
     useEffect(() => {
-        async function fetchAccountInfo() {
-            const res = await Server.Acconut.getInfo();
-            dispatch(updateAccount(res.data));
-        }
-        fetchAccountInfo();
-
         const cookies = new Cookies();
         const token = cookies.get('jwt');
-        if(token === undefined) {
+        if(!token) {
             return navigate('/signin');
         }
+        console.log(location);
     
         const decodedJwt = jwt_decode(token);
         if(decodedJwt.exp * 1000 < Date.now()) {
-            cookies.remove('jwt');
+            cookies.remove('jwt', {path: '/'});
             return navigate('/signin');
         }
     }, []);
@@ -88,23 +83,11 @@ const BasePage = (props) => {
                 alignItems:'center'
             }}>
                 <AppsIcon sx={{mt:3}} />
-                {location.pathname === "/home" ? 
-                    <HomeOutlinedIcon  sx={{mt:3, backgroundColor: '#58BDBC', padding: '10px', borderRadius: '50%', color: 'white'}} />
-                    :
                     <Link to="/home">
                         <HomeOutlinedIcon  sx={{mt:3, backgroundColor: '#58BDBC', padding: '10px', borderRadius: '50%', color: 'white'}} />
                     </Link>
-                }
-                {location.pathname.startsWith("/apps/crm") ? 
-                    <PersonOutlineIcon  sx={{mt:3, backgroundColor: '#f07d24', padding: '10px', borderRadius: '50%', color: 'white'}} />
-                    :
                     <a href={`/crm/${account._id}`}><PersonOutlineIcon  sx={{mt:3, backgroundColor: '#f07d24', padding: '10px', borderRadius: '50%', color: 'white'}} /></a>
-                }
-                {location.pathname.startsWith("/apps/sales") ? 
-                    <WorkOutlineIcon  sx={{mt:3, backgroundColor: '#d01f22', padding: '10px', borderRadius: '50%', color: 'white'}} />
-                    :
                     <a href={`/sales/${account._id}`}><WorkOutlineIcon  sx={{mt:3, backgroundColor: '#d01f22', padding: '10px', borderRadius: '50%', color: 'white'}} /></a>
-                }
             </Box>
             <Box sx={{
                 width: '100%',
@@ -133,7 +116,7 @@ const BasePage = (props) => {
                         gap: 2
                     }}> 
                         <Typography color="grey">Welcome, {account.firstName}</Typography>
-                        <Link to="/settings"><SettingsIcon /></Link>
+                        <Link to="/settings"><SettingsIcon sx={{color: 'primary.main'}} /></Link>
                         <Typography color="primary.main" sx={{cursor: 'pointer', display: 'flex', alignItems:'center', gap: 1}}onClick={handleLogout}><LogoutIcon sx={{fontSize: 18}} />Logout</Typography>
                     </Box>
                 </Box>

@@ -174,7 +174,7 @@ const Apps = (props) => {
         <Box sx={{width: "200px"}}>
             {
               
-              app.objectList?.map(object => <Typography sx={{textAlign: 'center',mb: 2, color: 'black', backgroundColor: (id === object.id ? '#e4e4e4': null), borderRadius: '40px', py:1 }}><Link to={`/${params.appName}/${params.userId}/${object.id}`}>{object.name}</Link></Typography>)
+              app.objectList?.map(object => <Typography sx={{textAlign: 'center',mb: 2, color: 'black', backgroundColor: (id === object.id ? '#e4e4e4': null), borderRadius: '40px', py:1 }}><Link to={`/${params.appName}/${params.userId}/${object.id}`}><span style={{color:'black'}}>{object.name}</span></Link></Typography>)
             }
         </Box>
         <Box sx={{display: 'flex', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', padding: '20px', width: '100%'}}>
@@ -200,7 +200,7 @@ const Apps = (props) => {
                   <span>Delete</span>
               </Typography>
               <Button onClick={handleOpenCreate} variant="contained" sx={{borderRadius: 3, fontSize: '12px', ml: 'auto', display: 'flex', alignItems:'center', gap: '5px', cursor: 'pointer'}}>
-                  Add record
+                  <b>Add record</b>
                   {/* <Button>Add contact</Button>  */}
                   {/* <AddCircleIcon sx={{fontSize:"24px"}} /> */}
               </Button>

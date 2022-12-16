@@ -32,8 +32,8 @@ function App() {
                 <Route path='/signin' element={<Signin />}/>  
                 <Route path='/signup' element={<Signup />}/>  
                 <Route path='/home' element={<BasePage><Home /></BasePage>}/>  
-                <Route path='/:appName/:userId' element={<BasePage key={window.location.pathname}><Apps key={1} /></BasePage>}/>  
-                <Route path='/:appName/:userId/:id' element={<BasePage key={window.location.pathname}><Apps key={2} /></BasePage>}/>  
+                <Route path='/:appName/:userId' element={<BasePage><Apps /></BasePage>}/>  
+                <Route path='/:appName/:userId/:id' element={<BasePage><Apps /></BasePage>}/>  
                 <Route path='/settings' element={<BasePage><Settings> <SettingsObject /> </Settings></BasePage>}/>  
                 <Route path='/settings/:id' element={<BasePage><Settings> <SettingsFields /></Settings></BasePage>}/>  
               </Routes>

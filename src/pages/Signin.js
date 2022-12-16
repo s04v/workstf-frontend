@@ -39,7 +39,9 @@ const Signin = () => {
             else {
                 setAlert("Success", 'success');
                 const cookies = new Cookies();
-                cookies.set('jwt', res.data.token, {maxAge: 2592000 * 12}); // 1 year
+                if(!cookies.get('jwt')) {
+                    cookies.set('jwt', res.data.token, {maxAge: 2592000 * 12, path: '/'}); // 1 year
+                }
                 setTimeout(() => window.location.href = '/home', 1000);
             }
         },
