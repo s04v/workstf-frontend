@@ -44,13 +44,11 @@ const Apps = (props) => {
       const appName = params.appName;
       const userId = params.appName;
       const res = await Server.Object.getByAppName(appName);
-      console.log('fetchData', res);
       if(res.error) {
         setAlert("Server error", 'error');
       } else {
         const objectNames = [];
         for(const object of res.data) {
-          console.log(object);
           objectNames.push({name: object.singularName, id: object._id});
           if(id && object._id === id) {
             dispatch(updateObject(object));
@@ -66,7 +64,6 @@ const Apps = (props) => {
       if(res.error) {
         setAlert("Server error", 'error');
       } else {
-        console.log('res', res);
         dispatch(updateRecords(res.data.data));
         dispatch(updateRecordTotal(res.data.total));
         // dispatch(updateObjectList(objectNames));
@@ -131,7 +128,6 @@ const Apps = (props) => {
         }
 
         const record = app.records.filter(item => item._id === app.selectedRecords[0])[0];
-        console.log(record);
         dispatch(updateRecordToEdit(record));
         setOpenEdit(true);
     }
@@ -177,6 +173,7 @@ const Apps = (props) => {
       <Box key={props.key} sx={{mt: 4, mb: 4, display: 'flex', height: '100%', gap: 4, position: 'relative'}}>
         <Box sx={{width: "200px"}}>
             {
+              
               app.objectList?.map(object => <Typography sx={{textAlign: 'center',mb: 2, color: 'black', backgroundColor: (id === object.id ? '#e4e4e4': null), borderRadius: '40px', py:1 }}><Link to={`/${params.appName}/${params.userId}/${object.id}`}>{object.name}</Link></Typography>)
             }
         </Box>
@@ -228,6 +225,8 @@ const Apps = (props) => {
                       {
                         app.object.schema?.map(field => <TableCell>{field.name}</TableCell>)
                       }
+                      <TableCell>Create Date</TableCell>
+                      <TableCell>Mofilied Date</TableCell>
                   </TableRow>
               </TableHead>
               <TableBody sx={{position: 'relative'}}>
@@ -251,19 +250,23 @@ const Apps = (props) => {
                                   <TableCell>{record._id.substr(17)}</TableCell>
                                   <TableCell>{record.data[app.object.primaryName]}</TableCell></>
                                 }
+                                  {console.log(record)}
                                   { 
                                     app.object.schema?.map(field => {
                                       if(field.type === 'multipleCheckboxes'){
-                                        console.log('record',record);
-                                          const activeCheckboxes =  Object.keys(record?.data[field.name]) && Object.keys(record?.data[field.name]).map(item => record?.data[field.name][item][0] ? item : null).filter(item => item !== null);
-                                          console.log(activeCheckboxes);
+                                        if([field.name] in record?.data && Object.keys(record?.data[field.name])) {
+                                          const activeCheckboxes =  Object.keys(record?.data[field.name]).map(item => record?.data[field.name][item][0] ? item : null).filter(item => item !== null);
                                           return <TableCell>{activeCheckboxes.join('; ')}</TableCell>  
-                                      }
+                                        }
+                                        return <TableCell></TableCell>  
+                                    }
                                         
                                       return <TableCell>{field.type === 'date' ? new Date(record.data[field.name]).toLocaleDateString('es-ES') : record.data[field.name]}</TableCell>
                                       
                                     })
                                   }
+                                  <TableCell>{new Date(record.createDate).toLocaleDateString('es-ES')}</TableCell>
+                                  <TableCell>{new Date(record.updateDate).toLocaleDateString('es-ES')}</TableCell>
                                   {/* <TableCell>{contact.firstName}</TableCell>
                                   <TableCell>{contact.lastName}</TableCell>
                                   <TableCell>{contact.email}</TableCell>

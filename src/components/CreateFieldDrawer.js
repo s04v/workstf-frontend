@@ -8,7 +8,7 @@ import Server from '../services/server';
 import { useDispatch, useSelector } from "react-redux";
 import { updateContacts, updateTotal } from "../store/contactsSlice";
 import useAlert from "../utils/useAlert";
-import { updateActiveObject } from "../store/settingsSlice";
+import { updateActiveObject, updateObjectList } from "../store/settingsSlice";
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import DateType from "./fieldsType/DateType";
 import DropdownType from "./fieldsType/DropdownType";
@@ -46,13 +46,15 @@ const CreateFieldDrawer = ({open, onClose, edit, initValues}) => {
         onSubmit: async (values) => {
             values.typeName = getTypeName(values.type);
             const res = edit ? submitEdit(activeObject._id, values) : submitCreate(activeObject._id, values);                                        
-            // const res = await Server.Object.createField(activeObject._id, values);
+            
             if(res.error) {
                 setAlert(res.errorMessage, 'error');
             } else {
                 setAlert("Success", 'success');
                 const updatedObjectRes = await Server.Object.get(activeObject._id);
-                dispatch(updateActiveObject(updatedObjectRes.data))
+                const objectList = await Server.Object.getList();
+                dispatch(updateActiveObject(updatedObjectRes.data));
+                dispatch(updateObjectList(objectList.data));
                 formik.handleReset();
                 onClose();
             }

@@ -96,6 +96,10 @@ const SettingsFields = () => {
         setTake(parseInt(e.target.value, 10));
     }
 
+    const fieldHover = (e) => {
+        console.log(e);
+    }
+
     return (
         <Box sx={{py: "30px",display: 'flex', flexDirection: 'column', backgroundColor: 'white', borderRadius: '20px', width: '100%'}}>
             <Typography variant="h5" sx={{px: "30px", fontWeight: 500}}>Custom object</Typography>
@@ -108,7 +112,6 @@ const SettingsFields = () => {
                         autoComplete="off"
                         name="selectedObject"
                         value={activeObject?.singularName}
-                        // onChange={(e) => dispatch(updateActiveObject(e.target.value))}
                 >
                     
                     {objectList.map(object => {
@@ -139,16 +142,10 @@ const SettingsFields = () => {
                         <Typography fontSize='14px' color="primary.main">
                             {fields.selected.length} Selected
                         </Typography>
-                        {/* <Typography onClick={handleOpenEdit}fontSize='14px' color="primary.main" sx={{display: 'flex', alignItems:'center', gap: '4px', cursor: 'pointer'}}> */}
-                        <Typography fontSize='14px' color="primary.main" sx={{display: 'flex', alignItems:'center', gap: '4px', cursor: 'pointer'}}>
-                            <EditIcon sx={{fontSize:"20px", color: 'black'}}/>
-                            <span>Edit</span>
-                        </Typography>
                         <Typography onClick={handleOpenDelete} fontSize='14px' color="primary.main" sx={{display: 'flex', alignItems:'center', gap: '4px', cursor: 'pointer'}}>
                             <DeleteOutlineIcon sx={{fontSize:"20px", color: 'black'}}/>
                             <span>Delete</span>
                         </Typography>
-                        {/* <Button onClick={() => setOpenCreate(true)} variant="contained" sx={{borderRadius: 3, fontSize: '12px', ml: 'auto', display: 'flex', alignItems:'center', gap: '5px', cursor: 'pointer'}}> */}
                         <Button onClick={() => setOpenCreateField(true)} variant="contained" sx={{borderRadius: 3, fontSize: '12px', ml: 'auto', display: 'flex', alignItems:'center', gap: '5px', cursor: 'pointer'}}>
                             Create field
                             
@@ -162,12 +159,6 @@ const SettingsFields = () => {
                         <TableHead>
                             <TableRow sx={{color: 'grey'}}>
                                 <TableCell padding="checkbox" sx={{ml: "20px"}}>
-                                {/* <Checkbox
-                                    color="primary"
-                                    inputProps={{
-                                    'aria-label': 'select all desserts',
-                                    }}
-                                /> */}
                                 </TableCell>
                                 <TableCell width="20%" >Name</TableCell>
                                 <TableCell >Type</TableCell>
@@ -184,7 +175,7 @@ const SettingsFields = () => {
                                 fields.visible?.map(field => {
                                     const isFieldSelected = isSelected(field._id);
 
-                                    return ( <TableRow sx={{padding: 4}} >
+                                    return ( <TableRow sx={{padding: 4, ':hover': { '#editButton':{display:'flex'}}}} >
                                         <TableCell padding="checkbox" sx={{pl: "20px"}}>
                                             <Checkbox
                                                 color="primary"
@@ -200,7 +191,7 @@ const SettingsFields = () => {
                                             <Box onClick={() => {
                                                 setEditInitValues(field);
                                                 setOpenEditField(true);
-                                            }} fontSize='14px' color="primary.main" sx={{display: 'flex', alignItems:'center', gap: '4px', cursor: 'pointer'}}>
+                                            }} fontSize='14px' color="primary.main" id="editButton" sx={{display: 'none', alignItems:'center', gap: '4px', cursor: 'pointer'}}>
                                                 <EditIcon sx={{fontSize:"18px", color: 'black'}}/>
                                                 <span>Edit</span>
                                             </Box>

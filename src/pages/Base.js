@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, Link, useNavigate, useParams } from "react-router-dom";
 import AppsIcon from '@mui/icons-material/Apps';
 import Footer from '../components/Footer';
@@ -11,9 +11,12 @@ import Cookies from "universal-cookie";
 import { useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import SettingsIcon from '@mui/icons-material/Settings';
+import { updateAccount } from "../store/accountSlice";
+import Server from "../services/server";
 
 const BasePage = (props) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const location = useLocation();
     const account = useSelector(state => state.account);
     const activeObject = useSelector(state => state.app.object);
@@ -25,10 +28,14 @@ const BasePage = (props) => {
     }
 
     useEffect(() => {
-        console.log('account', account);
+        async function fetchAccountInfo() {
+            const res = await Server.Acconut.getInfo();
+            dispatch(updateAccount(res.data));
+        }
+        fetchAccountInfo();
+
         const cookies = new Cookies();
         const token = cookies.get('jwt');
-        console.log(token);
         if(token === undefined) {
             return navigate('/signin');
         }
@@ -117,7 +124,7 @@ const BasePage = (props) => {
                         alignItems: 'center',
                         gap: 2
                     }}> 
-                        <img src={"logo.png"} alt="" style={{width: '40px'}}/>
+                        <img src="/logo.png" alt="" style={{width: '40px'}}/>
                         <Typography fontSize={18}><b>{makeHeader()}</b></Typography>
                     </Box>
                     <Box sx={{

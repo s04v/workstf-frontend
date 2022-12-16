@@ -49,6 +49,7 @@ const Signup = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            console.log(values);
             delete values.confirmPassword;
             const res = await Server.Auth.signUp(values);
             if(res.error) {
