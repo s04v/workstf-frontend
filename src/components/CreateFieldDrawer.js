@@ -45,7 +45,7 @@ const CreateFieldDrawer = ({open, onClose, edit, initValues}) => {
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             values.typeName = getTypeName(values.type);
-            const res = edit ? submitEdit(activeObject._id, values) : submitCreate(activeObject._id, values);                                        
+            const res = edit ? await submitEdit(activeObject._id, values) : await submitCreate(activeObject._id, values);                                        
             
             if(res.error) {
                 setAlert(res.errorMessage, 'error');

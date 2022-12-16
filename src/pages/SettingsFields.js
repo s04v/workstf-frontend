@@ -169,6 +169,7 @@ const SettingsFields = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody sx={{position: 'relative'}}>
+                            {console.log('activeObject', activeObject)}
                             {
                                 activeObject.schema && activeObject.schema.length !== 0 
                                 ?
