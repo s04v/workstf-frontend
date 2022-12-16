@@ -39,7 +39,7 @@ const Signin = () => {
             else {
                 setAlert("Success", 'success');
                 const cookies = new Cookies();
-                if(!cookies.get('jwt')) {
+                if(!cookies.get('jwt', {path: '/'})) {
                     cookies.set('jwt', res.data.token, {maxAge: 2592000 * 12, path: '/'}); // 1 year
                 }
                 setTimeout(() => window.location.href = '/home', 1000);

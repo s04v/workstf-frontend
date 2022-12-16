@@ -29,11 +29,10 @@ const BasePage = (props) => {
 
     useEffect(() => {
         const cookies = new Cookies();
-        const token = cookies.get('jwt');
+        const token = cookies.get('jwt', {path: '/'});
         if(!token) {
             return navigate('/signin');
         }
-        console.log(location);
     
         const decodedJwt = jwt_decode(token);
         if(decodedJwt.exp * 1000 < Date.now()) {
