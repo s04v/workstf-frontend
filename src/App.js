@@ -1,49 +1,33 @@
-import Signup from "./pages/Signup";
-import Signin from "./pages/Signin";
-import Home from "./pages/Home";
 import { store } from "./store";
 import { Provider } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { AlertProvider } from './utils/AlertProvider';
+import { BrowserRouter } from "react-router-dom";
+import { AlertProvider } from "./providers/alert";
 import { createTheme, ThemeProvider } from "@mui/material";
-import themeConfig from './theme.json';
-import BasePage from "./pages/Base";
-import Apps from "./pages/Apps";
-import WithAuth from "./utils/WithAuth";
-import Settings from "./pages/Settings";
-import SettingsFields from "./pages/SettingsFields";
-import SettingsObject from "./pages/SettingsObject";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { RouteCombiner } from "./routes";
+import { routes } from "./routes";
 
-const test = require('./theme.json');
+const test = require("./theme.json");
 
 const theme = createTheme(test);
 
 function App() {
-    return (
-    <ThemeProvider theme={theme}>
-    <Provider store={store}>
-      <AlertProvider>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <div className="App">
-            <BrowserRouter>
-              <Routes>
-                <Route path='/signin' element={<Signin />}/>  
-                <Route path='/signup' element={<Signup />}/>  
-                <Route path='/home' element={<BasePage><Home /></BasePage>}/>  
-                <Route path='/:appName/:userId' element={<BasePage><Apps /></BasePage>}/>  
-                <Route path='/:appName/:userId/:id' element={<BasePage><Apps /></BasePage>}/>  
-                <Route path='/settings' element={<BasePage><Settings> <SettingsObject /> </Settings></BasePage>}/>  
-                <Route path='/settings/:id' element={<BasePage><Settings> <SettingsFields /></Settings></BasePage>}/>  
-              </Routes>
-            </BrowserRouter> 
-          </div>
-        </LocalizationProvider>
-      </AlertProvider>
-    </Provider>
-    </ThemeProvider>
-  );
+	return (
+		<div className="App">
+			<ThemeProvider theme={theme}>
+				<Provider store={store}>
+					<AlertProvider>
+						<LocalizationProvider dateAdapter={AdapterDayjs}>
+							<BrowserRouter>
+								<RouteCombiner routes={routes} />
+							</BrowserRouter>
+						</LocalizationProvider>
+					</AlertProvider>
+				</Provider>
+			</ThemeProvider>
+		</div>
+	);
 }
 
 export default App;

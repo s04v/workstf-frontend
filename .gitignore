@@ -12,6 +12,7 @@ frontend.zip
 # production
 /build
 
+.prettierrc.old
 # misc
 .DS_Store
 .env.local
