@@ -9,6 +9,8 @@ import {
 import { Link } from "react-router-dom";
 import { useObjectsSettings } from "./useObjectSettings";
 import CreateDrawer from "./components/createDrawer";
+import FolderIcon from '@mui/icons-material/Folder';
+import DataTableLoader from "./components/loader";
 
 const ObjectSettings = () => {
 	const {
@@ -18,6 +20,8 @@ const ObjectSettings = () => {
 		handleChangeObject,
 		handleOpenDrawer,
 		handleCloseDrawer,
+		loading,
+		handleDelete
 	} = useObjectsSettings();
 
 	return (
@@ -30,42 +34,45 @@ const ObjectSettings = () => {
 						flexDirection: "column",
 						backgroundColor: "white",
 						borderRadius: "20px",
-						width: "100%",
+						height: "100%",
+						// width: "100%",
 					}}
 				>
-					<Typography variant="h5" sx={{ fontWeight: 500 }}>
-						Custom object
-					</Typography>
 					<Box
 						sx={{
-							margin: "40px auto",
+							// margin: "10vh auto",
+							height: "100%",
+							width: "100%",
 							display: "flex",
 							flexDirection: "column",
+							justifyContent: "center",
 							alignItems: "center",
-							width: "300px",
 						}}
 					>
 						<Typography
 							sx={{ fontSize: "84px", color: "#dcd8d8", userSelect: "none" }}
 						>
-							{"{ }"}
+							<img src="./assets/folder-icon.svg" alt="" />
 						</Typography>
-						<Typography color="grey">
-							Create your own custom custom objects and customise it to your
-							business needs.
+						<Typography sx={{textAlign: "center", width: 300}}>
+							Create your own custom object and
+						 	customize it to your needs.
 						</Typography>
 						<Button
 							onClick={handleOpenDrawer}
 							variant="contained"
 							sx={{
-								padding: "15px 30px",
-								mt: 3,
+								padding: "10px 20px",
+								mt: 4,
 								mb: 3,
-								borderRadius: 3,
-								fontSize: "12px",
+								borderRadius: 1,
+								display: "flex",
+								gap: 1,
+								justifyContent: "center"
 							}}
 						>
-							<b>Create Custom Object</b>
+							<FolderIcon />
+							<Typography sx={{fontWeight: 700}}>Create Custom Object</Typography>
 						</Button>
 					</Box>
 				</Box>
@@ -73,21 +80,15 @@ const ObjectSettings = () => {
 				<>
 					<Box
 						sx={{
-							py: "30px",
 							display: "flex",
 							flexDirection: "column",
 							backgroundColor: "white",
-							borderRadius: "20px",
 							width: "100%",
 						}}
 					>
-						<Typography variant="h5" sx={{ px: "30px", fontWeight: 500 }}>
-							Custom object
-						</Typography>
 						<Box
 							sx={{
-								px: "30px",
-								marginTop: "40px ",
+								py: 2,
 								display: "flex",
 								flexDirection: "column",
 							}}
@@ -97,18 +98,17 @@ const ObjectSettings = () => {
 									display: "flex",
 									alignItems: "center",
 									justifyContent: "space-between",
+									px: 3
 								}}
 							>
 								<Box sx={{ display: "flex", gap: 3, alignItems: "center" }}>
-									<Typography sx={{ fontSize: "14px" }}>
-										<b>Select an object</b>
-									</Typography>
 									<TextField
 										select
-										sx={{ mb: 2, width: "200px" }}
+										sx={{ my: 2, width: "400px" }}
 										autoComplete="off"
 										name="selectedObject"
-										value={activeObject?.singularName}
+										value={activeObject && activeObject.singularName}
+										label="Select a custom object"
 										// onChange={(e) => setSelectedObject(e.target.value)}
 										// error={formik.touched.country && Boolean(formik.errors.country)}
 										// helperText={formik.touched.country && formik.errors.country}
@@ -127,52 +127,39 @@ const ObjectSettings = () => {
 									onClick={handleOpenDrawer}
 									variant="contained"
 									sx={{
-										padding: "10px 30px",
-										height: "50px",
-										borderRadius: 3,
-										fontSize: "12px",
+										padding: "10px 20px",
+										borderRadius: 1,
+										display: "flex",
+										gap: 1,
+										justifyContent: "center"
 									}}
 								>
-									<b>Create Custom Object</b>
+									<FolderIcon />
+									<Typography sx={{}}>Create Custom Object</Typography>
 								</Button>
 							</Box>
-							<Box sx={{ position: "relative" }}>
-								<Box
-									style={{
-										borderBottom: "1px solid black",
-										padding: "10px",
-										color: "primary",
-										fontSize: "14px",
-										width: "85px",
-									}}
-								>
-									Configuration
-								</Box>
-							</Box>
 						</Box>
-						<Divider sx={{ mt: "0px" }} />
-						<Typography
-							sx={{ fontSize: "14px", color: "grey", px: "30px", py: "20px" }}
-						>
-							Choose what information you collect about your object and how to
-							keep your records updated.
-						</Typography>
 						<Divider />
-						<Box sx={{ px: "30px" }}>
-							<Typography sx={{ fontSize: "14px", my: "20px" }}>
-								<b>Records</b>
-							</Typography>
-							<Typography sx={{ fontSize: "14px", mb: "10px" }}>
-								<Link to="/settings/fields">
-									<b style={{ color: "#0a636d" }}>
-										Manage {activeObject?.singularName} fields
-									</b>
-								</Link>
-							</Typography>
-							<Typography sx={{ fontSize: "12px", color: "grey" }}>
-								Manage the information you collect about your object
+						<Box sx={{ backgroundColor: "#F7F7F7", py: 2}}>
+							<Typography sx={{
+								fontSize: 20,
+								mx: 3,
+								my: 1
+							}}>
+								Setup
 							</Typography>
 						</Box>
+						<Box sx={{ px: 3, py: 2 }}>
+							<Typography sx={{ mb: "10px" }}>
+								<Typography sx={{ fontWeight: 600, textDecotration: "underline", color: "#212121", cursor: "pointer" }} onClick={handleDelete}>
+									Delete custom object
+								</Typography>
+							</Typography>
+							<Typography sx={{ fontSize: "14px", color: "#828282" }}>
+							This is change is irreversible.
+							</Typography>
+						</Box>
+						<Divider />
 					</Box>
 				</>
 			)}

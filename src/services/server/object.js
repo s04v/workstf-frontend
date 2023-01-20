@@ -16,8 +16,8 @@ const Object = {
 	get: async (id) => {
 		return await resolve(Http.get(`/object/App/${id}`)).then((res) => res.data);
 	},
-	delete: async (appName, id) => {
-		return await resolve(Http.delete(`/object/${id}`).then((res) => res.data));
+	delete: async (id) => {
+		return await resolve(Http.delete(`/object/appaname/${id}`).then((res) => res.data));
 	},
 	createField: async (objectId, data) => {
 		return await resolve(

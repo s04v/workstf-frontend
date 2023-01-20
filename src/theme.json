@@ -1,7 +1,15 @@
 {
 	"palette": {
 		"primary": {
-			"main": "#0a636d"
+			"main": "#212121"
 		}
-	}
+	},
+	"typography": {
+    "button": {
+      "textTransform": "none"
+    }
+  },
+	"MuiSelect": {
+    "disablePortal": true
+  }
 }

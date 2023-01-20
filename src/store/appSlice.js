@@ -61,4 +61,5 @@ export const {
 	updateRecordTotal,
 	resetRecords,
 } = appSlice.actions;
+
 export default appSlice.reducer;

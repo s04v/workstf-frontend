@@ -1,11 +1,14 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
+import Server from "@src/services/server";
+import { updateAccount } from "@src/store/accountSlice";
 
 export const useBase = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const location = useLocation();
 	const account = useSelector((state) => state.account);
 	const activeObject = useSelector((state) => state.app.object);
@@ -16,6 +19,11 @@ export const useBase = () => {
 			navigate("/signin");
 		}, 500);
 	};
+
+	const fetchData = async () => {
+		const res = await Server.Acconut.getInfo();
+		dispatch(updateAccount(res.data));
+	}
 
 	useEffect(() => {
 		const cookies = new Cookies();
@@ -29,6 +37,7 @@ export const useBase = () => {
 			cookies.remove("jwt", { path: "/" });
 			return navigate("/signin");
 		}
+		fetchData();
 	}, []);
 
 	const makeHeader = () => {

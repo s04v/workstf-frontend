@@ -48,7 +48,7 @@ export const useFieldSettings = () => {
 	}, [skip, take, activeObject]);
 
 	const updateFields = () => {
-		const newValue = activeObject.schema?.slice(skip, skip + take);
+		const newValue = activeObject?.schema?.slice(skip, skip + take);
 		dispatch(updateVisibleFields(newValue));
 	};
 

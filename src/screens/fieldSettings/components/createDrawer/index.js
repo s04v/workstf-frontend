@@ -15,27 +15,27 @@ import DropdownType from "@src/shared/components/fieldTypes/DropdownType";
 import BooleanType from "@src/shared/components/fieldTypes/BooleanType";
 import CheckboxType from "@src/shared/components/fieldTypes/CheckboxType";
 
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import { useCreateDrawer } from "./useCreateDrawer";
 
 const CreateDrawer = ({ open, onClose, edit, initValues }) => {
 	const { formik, handleClose } = useCreateDrawer(onClose, edit, initValues);
 
-	const renderPreview = (type, data = null) => {
+	const renderPreview = (type, label, data = null, ) => {
 		let preview = null;
 		switch (type) {
 			case "boolean":
-				preview = <BooleanType preview />;
+				preview = <BooleanType label={label} preview />;
 				break;
 			case "dropdown":
-				preview = <DropdownType data={data} preview />;
+				preview = <DropdownType data={data} label={label} preview />;
 				break;
 			case "multipleCheckboxes":
-				preview = <CheckboxType data={data} preview />;
+				preview = <CheckboxType data={data} label={label} preview />;
 				break;
 			case "date":
-				preview = <DateType preview />;
+				preview = <DateType label={label} preview />;
 				break;
 			default:
 				return null;
@@ -46,14 +46,10 @@ const CreateDrawer = ({ open, onClose, edit, initValues }) => {
 				sx={{
 					display: "flex",
 					justifyContent: "center",
-					backgroundColor: "#f2f2f25e",
-					border: "#e6e6e687",
-					borderStyle: "solid",
-					borderWidth: "1px 0px 1px 0px",
-					mt: 2,
-					mb: 3,
-					px: 4,
-					py: 6,
+					borderTop: "1px solid rgba(0, 0, 0, 0.23)",
+					borderBottom: "1px solid rgba(0, 0, 0, 0.23)",
+					py: 5,
+					px: 4
 				}}
 			>
 				{preview}
@@ -66,7 +62,7 @@ const CreateDrawer = ({ open, onClose, edit, initValues }) => {
 			anchor={"right"}
 			open={open}
 			PaperProps={{
-				sx: { width: "40%" },
+				sx: { width: "521px" },
 			}}
 		>
 			<Box
@@ -93,14 +89,14 @@ const CreateDrawer = ({ open, onClose, edit, initValues }) => {
 			>
 				<FormikProvider value={formik}>
 					<form onSubmit={formik.handleSubmit}>
-						<Box sx={{ display: "flex", gap: 3, px: 4 }}>
+						<Box sx={{ gap: 3, px: 4 }}>
 							<Box sx={{ width: "100%" }}>
-								<span style={{ fontSize: 14 }}>Field name *</span>
 								<TextField
 									fullWidth
 									sx={{ my: 2 }}
 									autoComplete="off"
 									name="name"
+									label="Field name"
 									value={formik.values.name}
 									onChange={formik.handleChange}
 									error={formik.touched.name && Boolean(formik.errors.name)}
@@ -108,21 +104,19 @@ const CreateDrawer = ({ open, onClose, edit, initValues }) => {
 								/>
 							</Box>
 							<Box sx={{ width: "100%" }}>
-								<span style={{ fontSize: 14 }}>Field type *</span>
 								<TextField
 									select
 									fullWidth
 									sx={{ my: 2 }}
 									autoComplete="off"
 									name="type"
-									placeholder="Select field type"
-									value={formik.values.type || "none"}
+									label="Field type"
+									value={formik.values.type || "text"}
 									onChange={formik.handleChange}
 									error={formik.touched.type && Boolean(formik.errors.type)}
 									helperText={formik.touched.type && formik.errors.type}
 								>
-									<MenuItem value="none">Select field type</MenuItem>
-									<MenuItem value="text">Text</MenuItem>
+									<MenuItem value="text">Single-line Text</MenuItem>
 									<MenuItem value="number">Number</MenuItem>
 									<MenuItem value="boolean">Boolean</MenuItem>
 									<MenuItem value="dropdown">Dropdown</MenuItem>
@@ -134,7 +128,7 @@ const CreateDrawer = ({ open, onClose, edit, initValues }) => {
 							</Box>
 						</Box>
 						<Box
-							sx={{ display: "flex", flexDirection: "column", gap: 1, px: 4 }}
+							sx={{ display: "flex", flexDirection: "column", gap: 1, px: 4,py: 1 }}
 						>
 							{formik.values.type === "dropdown" ||
 							formik.values.type === "multipleCheckboxes" ? (
@@ -144,7 +138,7 @@ const CreateDrawer = ({ open, onClose, edit, initValues }) => {
 										<>
 											{formik.values.labels.map((label, i) => {
 												return (
-													<Box sx={{ display: "flex", gap: 3 }}>
+													<Box sx={{ display: "flex", gap: 2 }}>
 														<TextField
 															sx={{ my: 1, width: "85%" }}
 															autoComplete="off"
@@ -161,12 +155,15 @@ const CreateDrawer = ({ open, onClose, edit, initValues }) => {
 																sx={{
 																	display: "flex",
 																	alignSelf: "center",
-																	fontSize: "14px",
+																	padding: "15px",
 																	cursor: "pointer",
+																	borderRadius: "50%",
+																	":hover": {
+																		backgroundColor: "rgba(33, 33, 33, 0.04);"
+																	}
 																}}
 															>
-																<DeleteOutlineIcon sx={{ fontSize: "18px" }} />{" "}
-																Delete
+																<DeleteIcon sx={{ fontSize: "28px" }} />
 															</Typography>
 														) : null}
 													</Box>
@@ -176,38 +173,46 @@ const CreateDrawer = ({ open, onClose, edit, initValues }) => {
 												onClick={() => arrayHelpers.push(null)}
 												sx={{
 													display: "flex",
+													width: "max-content",
 													fontSize: "14px",
 													cursor: "pointer",
 													gap: 1,
+													padding: 1,
+													borderRadius: "15px",
+													fontWeight: 600,
+													":hover": {
+														backgroundColor: "rgba(33, 33, 33, 0.04);"
+													}
 												}}
 											>
-												<AddCircleOutlineIcon sx={{ fontSize: "18px" }} /> Add
-												another label{" "}
+												<AddIcon sx={{ fontSize: "18px" }} /> Add label
 											</Typography>
 										</>
 									)}
 								/>
 							) : null}
+							{<renderPreview type={formik.values.type} />}
 						</Box>
-						{renderPreview(formik.values.type, formik.values.labels) || (
-							<Divider sx={{ my: 4 }} />
-						)}
+						{
+							renderPreview(formik.values.type, formik.values.name, formik.values.labels) || <Divider sx={{my: 4}} />
+						}
 						{/* <CheckboxType data={["label1", "label2 qwe", "label3", "label1", "label2 qwe", "label3", "label1", "label2 qwe", "label3"]} /> */}
 						{/* <DropdownType data={["label1", "label2 qwe", "label3", "label1", "label2 qwe", "label3", "label1", "label2 qwe", "label3"]} /> */}
 						{/* <BooleanType /> */}
 						{/* <DateType /> */}
 
-						<Box sx={{ px: 4 }}>
+						<Box sx={{ px: 4, position: "absolute", bottom: 0, left: 0, right: 0, py: 5, backgroundColor: "#FBFBFB", borderTop: "1px solid rgba(196, 196, 196, 0.29)"}}>
 							<Button
 								type="submit"
 								variant="contained"
-								sx={{ px: 4, py: 1, mr: 2, fontSize: 12 }}
+								sx={{ px: 4, py: 1, mr: 2,  fontSize: "16px" }}
 							>
-								<b>Create</b>
+								{edit ? <b>Save</b> : <b>Create</b>}
+								
 							</Button>
 							<Button
 								variant="outlined"
-								sx={{ px: 4, border: 2, fontSize: 12, ":hover": { border: 2 } }}
+								sx={{ px: 4, py: 0.8, border: 2, fontSize: "16px", ":hover": { border: 2 } }}
 								onClick={handleClose}
 							>
 								<b>Cancel</b>

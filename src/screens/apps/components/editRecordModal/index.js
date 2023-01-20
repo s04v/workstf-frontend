@@ -16,6 +16,7 @@ import BooleanType from "@src/shared/components/fieldTypes/BooleanType";
 import DropdownType from "@src/shared/components/fieldTypes/DropdownType";
 import CheckboxType from "@src/shared/components/fieldTypes/CheckboxType";
 import DateType from "@src/shared/components/fieldTypes/DateType";
+import { FormikProvider } from "formik";
 
 const style = {
 	position: "absolute",
@@ -25,7 +26,7 @@ const style = {
 	width: 400,
 	bgcolor: "background.paper",
 	boxShadow: 24,
-	borderRadius: "20px",
+	borderRadius: 2,
 	border: 0,
 };
 
@@ -40,7 +41,7 @@ const EditRecordModal = ({ open, onClose }) => {
 		handleClose,
 	} = useEditRecordModal(onClose);
 
-	const renderField = (type, name, value, onChange) => {
+	const renderField = (type, name, value, onChange, setFieldValue) => {
 		let field = null;
 		switch (type) {
 			case "text":
@@ -83,7 +84,7 @@ const EditRecordModal = ({ open, onClose }) => {
 				);
 				break;
 			case "date":
-				field = <DateType name={name} value={value} onChange={onChange} />;
+				field = <DateType name={name} value={value} onChange={(val) => setFieldValue(name, Date.parse(val))} />;
 				break;
 			default:
 				return null;
@@ -96,8 +97,6 @@ const EditRecordModal = ({ open, onClose }) => {
 					justifyContent: "center",
 					mt: 2,
 					mb: 3,
-					px: 4,
-					py: 6,
 				}}
 			>
 				{field}
@@ -113,13 +112,13 @@ const EditRecordModal = ({ open, onClose }) => {
 						backgroundColor: "primary.main",
 						color: "white",
 						padding: 3,
-						borderTopLeftRadius: "20px",
-						borderTopRightRadius: "20px",
+						borderTopLeftRadius: 1,
+						borderTopRightRadius: 1,
 						display: "flex",
 						justifyContent: "space-between",
 					}}
 				>
-					<b>Edit property</b>{" "}
+					Edit property{" "}
 					<CloseIcon
 						sx={{ fontSize: "24px", cursor: "pointer" }}
 						onClick={handleClose}
@@ -131,13 +130,14 @@ const EditRecordModal = ({ open, onClose }) => {
 					}}
 				>
 					<Typography color="grey" fontSize="12px">
-						Property to update
+						
 					</Typography>
+					<FormikProvider value={formik}>
 					<form onSubmit={formik.handleSubmit}>
 						<Box fullWidth>
-							<Select
-								labelId="demo-simple-select-label"
-								id="demo-simple-select"
+							<TextField
+								select
+								label="Property to update"
 								value={property}
 								onChange={handleChange}
 								fullWidth
@@ -158,8 +158,9 @@ const EditRecordModal = ({ open, onClose }) => {
 										{field.name}
 									</MenuItem>
 								))}
-							</Select>
+							</TextField>
 							{/* {console.log(formik.values)} */}
+							<Box>
 							{
 								property !== "none" &&
 									formik.values &&
@@ -167,7 +168,8 @@ const EditRecordModal = ({ open, onClose }) => {
 										activeType,
 										property,
 										formik.values[property],
-										formik.handleChange
+										formik.handleChange,
+										formik.setFieldValue
 									)
 								//     <TextField
 								//     fullWidth
@@ -180,22 +182,25 @@ const EditRecordModal = ({ open, onClose }) => {
 								//     helperText={formik.touched[property] && formik.errors[property]}
 								// />
 							}
+
+						</Box>
 						</Box>
 						<Button
 							type="submit"
 							variant="contained"
-							sx={{ px: 4, py: 1, mr: 2, fontSize: 12 }}
+							sx={{ px: 4, py: 1, mr: 2 }}
 						>
 							<b>Update</b>
 						</Button>
 						<Button
 							variant="outlined"
-							sx={{ px: 4, border: 2, fontSize: 12, ":hover": { border: 2 } }}
+							sx={{ px: 4, border: 2, ":hover": { border: 2 } }}
 							onClick={handleClose}
 						>
 							<b>Cancel</b>
 						</Button>
 					</form>
+					</FormikProvider>
 				</Box>
 			</Box>
 		</Modal>

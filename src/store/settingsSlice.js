@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
 	objectList: [],
-	activeObject: {},
+	activeObject: null,
 	objectSchema: [],
 	fields: {
 		visible: [],
@@ -15,7 +15,6 @@ const settingsSlice = createSlice({
 	initialState,
 	reducers: {
 		updateObjectList: (state, action) => {
-			console.log("action", action);
 			state.objectList = action.payload;
 		},
 		updateActiveObject: (state, action) => {

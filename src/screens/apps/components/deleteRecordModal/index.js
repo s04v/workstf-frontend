@@ -36,8 +36,8 @@ const DeleteRecordModal = ({ open, onClose }) => {
 			open={open}
 			onClose={onClose}
 			handleDelete={handleDelete}
-			title={`Detele ${selectedRecords.length} records`}
-			message={`You are about to delete ${selectedRecords.length} records. Deleted records can't be restored and will be deleted permanently.`}
+			title={`Detele ${selectedRecords.length} records?`}
+			message={`You are about to delete ${selectedRecords.length} record{s}. Deleted records can't be restored.`}
 		/>
 	);
 };

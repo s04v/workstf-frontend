@@ -12,7 +12,6 @@ const accountSlice = createSlice({
 	initialState,
 	reducers: {
 		updateAccount: (state, action) => {
-			console.log("updateProfile", action);
 			return action.payload;
 		},
 	},

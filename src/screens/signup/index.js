@@ -1,78 +1,68 @@
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
 	Box,
 	Button,
-	Container,
+	Divider,
 	Grid,
-	IconButton,
-	InputAdornment,
 	TextField,
 	Typography,
 } from "@mui/material";
+import Footer from "@src/layouts/footer";
 import { useSignup } from "./useSignup";
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 export const Signup = () => {
 	const {
 		formik,
-		showPassword,
-		showConfirmPassword,
-		toggleShowPassword,
-		toggleShowConfirmPassword,
 	} = useSignup();
 
 	return (
-		<Container
-			maxWidth="md"
+		<Box
 			sx={{
-				paddingTop: 4,
+				width: "100%",
 				display: "flex",
-				flexDirection: "column",
 				alignItems: "center",
 				height: "100vh",
 			}}
 		>
-			<img src="./workstf.png" alt="" style={{ width: "200px" }} />
+			<img
+				style={{ position: "absolute", maxHeight: "100vh" }}
+				src="./assets/part-background.svg"
+				alt="part-background"
+			/>
 			<Box
 				sx={{
-					width: "100%",
+					width: "24%",
 					display: "flex",
-					gap: 5,
-					height: "100%",
+					flexDirection: "column",
+					alignItems: "center",
+					margin: "0 auto",
+					height: "100vh",
 				}}
 			>
 				<Box
 					sx={{
-						width: "50%",
+						width: "100%",
 						textAlign: "center",
 					}}
 				>
-					<h1>Create your free account</h1>
-					<Button
-						fullWidth
-						variant="contained"
-						sx={{ mb: 2, borderRadius: 3, fontSize: "14px" }}
-						disabled
+					<img
+						src="./assets/workstf-logo.svg"
+						style={{ marginTop: 100, width: "11vw" }}
+						alt=""
+					/>
+					<Typography
+					sx={{fontFamily: "Crimson Text !important", fontSize: "36px", fontWeight: 700, mt: "60px", mb: "30px" }}
 					>
-						Sign up with Google
-					</Button>
-					<Button
-						fullWidth
-						variant="contained"
-						sx={{ mb: 2, borderRadius: 3, fontSize: "14px" }}
-						disabled
-					>
-						Sign up with Linked in
-					</Button>
-					<Typography sx={{ mb: 1, mt: 1 }}>or</Typography>
+						Sign up for your account
+					</Typography>
 					<form onSubmit={formik.handleSubmit}>
 						<Grid container spacing={2}>
 							<Grid item xs={12} sm={6}>
 								<TextField
-									size="small"
 									name="firstName"
 									fullWidth
 									autoComplete="off"
-									placeholder="Last name"
+									label="First name"
 									value={formik.values.firstName}
 									onChange={formik.handleChange}
 									error={
@@ -85,11 +75,10 @@ export const Signup = () => {
 							</Grid>
 							<Grid item xs={12} sm={6}>
 								<TextField
-									size="small"
 									name="lastName"
 									fullWidth
 									autoComplete="off"
-									placeholder="First name"
+									label="Last name"
 									value={formik.values.lastName}
 									onChange={formik.handleChange}
 									error={
@@ -100,11 +89,10 @@ export const Signup = () => {
 							</Grid>
 							<Grid item xs={12}>
 								<TextField
-									size="small"
 									name="email"
 									fullWidth
 									autoComplete="off"
-									placeholder="Email"
+									label="Email"
 									value={formik.values.email}
 									onChange={formik.handleChange}
 									error={formik.touched.email && Boolean(formik.errors.email)}
@@ -113,40 +101,26 @@ export const Signup = () => {
 							</Grid>
 							<Grid item xs={12}>
 								<TextField
-									size="small"
 									name="password"
 									fullWidth
 									autoComplete="off"
-									placeholder="Password"
-									type={showPassword ? "text" : "password"}
+									label="Password"
+									type={"password"}
 									value={formik.values.password}
 									onChange={formik.handleChange}
 									error={
 										formik.touched.password && Boolean(formik.errors.password)
 									}
 									helperText={formik.touched.password && formik.errors.password}
-									InputProps={{
-										endAdornment: (
-											<InputAdornment position="end">
-												<IconButton
-													aria-label="toggle password visibility"
-													onClick={toggleShowPassword}
-												>
-													{!showPassword ? <Visibility /> : <VisibilityOff />}
-												</IconButton>
-											</InputAdornment>
-										),
-									}}
 								/>
 							</Grid>
 							<Grid item xs={12}>
 								<TextField
-									size="small"
 									name="confirmPassword"
 									fullWidth
 									autoComplete="off"
-									type={showConfirmPassword ? "text" : "password"}
-									placeholder="Confirm password"
+									type={"password"}
+									label="Confirm password"
 									value={formik.values.confirmPassword}
 									onChange={formik.handleChange}
 									error={
@@ -157,22 +131,6 @@ export const Signup = () => {
 										formik.touched.confirmPassword &&
 										formik.errors.confirmPassword
 									}
-									InputProps={{
-										endAdornment: (
-											<InputAdornment position="end">
-												<IconButton
-													aria-label="toggle password visibility"
-													onClick={toggleShowConfirmPassword}
-												>
-													{!showConfirmPassword ? (
-														<Visibility />
-													) : (
-														<VisibilityOff />
-													)}
-												</IconButton>
-											</InputAdornment>
-										),
-									}}
 								/>
 							</Grid>
 						</Grid>
@@ -180,37 +138,47 @@ export const Signup = () => {
 							type="submit"
 							fullWidth
 							variant="contained"
-							sx={{ mt: 3, mb: 3, borderRadius: 3, fontSize: "14px" }}
+							sx={{
+								mt: 3,
+								mb: 3,
+								borderRadius: 1,
+								fontSize: "16px",
+								fontWeight: 700,
+							}}
 						>
-							Next
+							Sign up {' '}<KeyboardArrowRightIcon />
 						</Button>
 					</form>
 					<Typography align="left" fontSize={12} sx={{ color: "grey" }}>
 						We're commited to your privacy. Workstf uses the information you
 						provide to us to contact you about our relevant content, products,
 						and services. You may unsubscribe from these communications as any
-						time. For more information. check out our Privacy Policy.
+						time. For more information. check out our <a href="#" style={{textDecoration: "underline", color: "black", fontWeight: 700}}>Privacy Policy</a>
+					</Typography>
+					<Divider
+						sx={{
+							backgroundColor: "gba(33, 33, 33, 0.3)",
+							mt: "40px",
+							mb: "30px",
+						}}
+					/>
+					<Typography sx={{ textAlign: "center" }}>
+						Don't have an account?  
+						<a
+							href="/signin"
+							style={{
+								fontWeight: 700,
+								color: "black",
+								textDecoration: "underline",
+							}}
+						>
+							Log in
+						</a>
 					</Typography>
 				</Box>
-				<Box
-					sx={{
-						width: "50%",
-					}}
-				>
-					<img src="employee.png" alt="" style={{ width: "100%" }} />
-					<Typography
-						align="center"
-						color="primary.main"
-						sx={{ fontWeight: "500" }}
-					>
-						<b>Workstf's CRM is 100% free.</b>
-					</Typography>
-					<Typography align="center" fontSize={12} color="grey">
-						No credit cart needed.
-					</Typography>
-				</Box>
+				<Footer />
 			</Box>
-		</Container>
+		</Box>
 	);
 };
 

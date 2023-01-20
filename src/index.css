@@ -12,6 +12,10 @@ body {
 	/* height: auto !important;   */
 }
 
+* {
+	font-family: 'Proxima Nova', sans-serif !important;
+}
+
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
 		monospace;
@@ -27,19 +31,26 @@ a {
 
 .App {
 	min-height: 100vh;
+	background-color: white;
+}
+
+.MuiInputBase-input {
+	/* font-size: 1vw !important; */
+	font-size: 16px !important;
+
 }
 
 .MuiOutlinedInput-notchedOutline {
-	border-color: rgba(255, 255, 255, 0) !important;
-	border-width: 4px !important;
-	border-color: white;
+	border: 1px solid rgba(0, 0, 0, 0.23);
 	outline-style: none;
-	box-shadow: 0px 3px 5px -1px #e0e0e0;
-	outline: "none";
+
+	/* box-shadow: 0px 3px 5px -1px #e0e0e0; */
+	/* outline: "none"; */
 	border-radius: 10px;
 }
-.MuiInputBase-root {
-	font-size: 14px !important;
+.MuiInputBase-root ul {
+	border-color: green;
+	box-shadow: 0px 0px 10px green;
 }
 
 .MuiTable-root {
@@ -48,7 +59,7 @@ a {
 }
 
 .MuiTableHead-root th {
-	color: grey !important;
+	color: #212121 !important;
 }
 
 .MuiTableHead-root tr {
@@ -72,6 +83,6 @@ a {
 	box-shadow: none !important;
 }
 
-.MuiMenu-list {
-	padding-bottom: 0 !important;
+.MuiPopover-paper {
+	box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 3px rgba(0, 0, 0, 0.12) !important;
 }

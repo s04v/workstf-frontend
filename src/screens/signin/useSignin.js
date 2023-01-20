@@ -15,7 +15,6 @@ const validationSchema = yup.object({
 
 export const useSignin = () => {
 	const { setAlert } = useAlert();
-	const [showPassword, setShowPassword] = useState(false);
 
 	const formik = useFormik({
 		initialValues: {
@@ -41,11 +40,8 @@ export const useSignin = () => {
 		},
 	});
 
-	const toggleShowPassword = () => setShowPassword(!showPassword);
 
 	return {
 		formik,
-		showPassword,
-		toggleShowPassword,
 	};
 };

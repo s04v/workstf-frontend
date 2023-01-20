@@ -20,7 +20,7 @@ export const useCreateDrawer = (onClose, edit, initValues) => {
 
 	const defaultValues = {
 		name: "",
-		type: "none",
+		type: "text",
 		labels: [null],
 	};
 

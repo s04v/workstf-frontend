@@ -11,7 +11,7 @@ export const RouteCombiner = ({ routes }) => {
 			path,
 		}) => {
 			const ComponentWithLayout = () => {
-				return auth ? (
+				return !auth ? (
 					<Layout>
 						<Component />
 					</Layout>
@@ -23,6 +23,8 @@ export const RouteCombiner = ({ routes }) => {
 					</AuthProvider>
 				);
 			};
+
+			
 
 			return (
 				<Route

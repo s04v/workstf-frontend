@@ -1,7 +1,9 @@
 import BasePage from "@src/layouts/base";
-import Settings from "@src/layouts/settings";
+import SettingsLayout from "@src/layouts/settingsLayout";
 import Apps from "@src/screens/apps";
+import Settings from "@src/screens/settings";
 import FieldSettings from "@src/screens/fieldSettings";
+import Home from "@src/screens/home";
 import ObjectSettings from "@src/screens/objectSettings";
 import Signin from "@src/screens/signin";
 import Signup from "@src/screens/signup";
@@ -21,7 +23,7 @@ const routes = [
 		path: "/home",
 		auth: true,
 		exact: true,
-		Component: () => <div></div>,
+		Component: Home,
 		Layout: BasePage,
 	},
 	{
@@ -42,24 +44,24 @@ const routes = [
 		path: "/settings",
 		auth: true,
 		exact: true,
-		Component: ObjectSettings,
+		Component: Settings,
 		Layout: ({ children }) => (
 			<BasePage>
-				<Settings>{children}</Settings>
+				<SettingsLayout>{children}</SettingsLayout>
 			</BasePage>
 		),
 	},
-	{
-		path: "/settings/:id",
-		auth: true,
-		exact: true,
-		Component: FieldSettings,
-		Layout: ({ children }) => (
-			<BasePage>
-				<Settings>{children}</Settings>
-			</BasePage>
-		),
-	},
+	// {
+	// 	path: "/settings/:id",
+	// 	auth: true,
+	// 	exact: true,
+	// 	Component: FieldSettings,
+	// 	Layout: ({ children }) => (
+	// 		<BasePage>
+	// 			<SettingsLayout>{children}</SettingsLayout>
+	// 		</BasePage>
+	// 	),
+	// },
 ];
 
 export default routes;

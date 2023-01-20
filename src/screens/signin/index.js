@@ -1,9 +1,9 @@
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
 	Box,
 	Button,
 	Checkbox,
 	Container,
+	Divider,
 	FormControlLabel,
 	Grid,
 	IconButton,
@@ -11,33 +11,48 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
+import Footer from "@src/layouts/footer";
 import { useSignin } from "./useSignin";
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 const Signin = () => {
-	const { formik, showPassword, toggleShowPassword } = useSignin();
+	const { formik } = useSignin();
 
 	return (
-		<Container
-			maxWidth="md"
+		<Box
 			sx={{
-				paddingTop: 4,
+				width: "100%",
 				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				justifyContent: "center",
+				alignItems: "start",
 				height: "100vh",
 			}}
 		>
-			<img src="./workstf.png" alt="" style={{ width: "200px" }} />
+			{/* <img src="./workstf.png" alt="" style={{ width: "200px" }} /> */}
+			<img
+				style={{ position: "absolute", maxHeight: "100vh" }}
+				src="./assets/part-background-1.svg"
+				alt="part-background"
+			/>
 			<Box
 				sx={{
-					width: "50%",
+					width: "24%",
 					display: "flex",
-					gap: 5,
-					height: "100%",
-					mt: 10,
+					flexDirection: "column",
+					alignItems: "center",
+					margin: "0 auto",
+					height: "100vh",
 				}}
 			>
+				<img
+					src="./assets/workstf-logo.svg"
+					style={{ marginTop: 100, width: "11vw" }}
+					alt=""
+				/>
+				<Typography
+					sx={{ fontFamily: "Crimson Text !important", fontSize: "36px", fontWeight: 700, mt: "60px", mb: "30px" }}
+				>
+					Log in to your account
+				</Typography>
 				<Box
 					sx={{
 						width: "100%",
@@ -47,11 +62,10 @@ const Signin = () => {
 						<Grid container spacing={2}>
 							<Grid item xs={12}>
 								<TextField
-									size="small"
 									name="email"
 									fullWidth
 									autoComplete="off"
-									placeholder="Email address"
+									label="Email address "
 									value={formik.values.email}
 									onChange={formik.handleChange}
 									error={formik.touched.email && Boolean(formik.errors.email)}
@@ -60,61 +74,63 @@ const Signin = () => {
 							</Grid>
 							<Grid item xs={12}>
 								<TextField
-									size="small"
 									name="password"
 									fullWidth
 									autoComplete="off"
-									placeholder="Password"
-									type={showPassword ? "text" : "password"}
+									label="Password"
+									type={"password"}
 									value={formik.values.password}
 									onChange={formik.handleChange}
 									error={
 										formik.touched.password && Boolean(formik.errors.password)
 									}
 									helperText={formik.touched.password && formik.errors.password}
-									InputProps={{
-										endAdornment: (
-											<InputAdornment position="end">
-												<IconButton
-													aria-label="toggle password visibility"
-													onClick={toggleShowPassword}
-												>
-													{!showPassword ? <Visibility /> : <VisibilityOff />}
-												</IconButton>
-											</InputAdornment>
-										),
-									}}
 								/>
 							</Grid>
 						</Grid>
-						<Typography
-							fontSize={12}
-							sx={{
-								textDecoration: "underline",
-								textAlign: "center",
-								mt: 2,
-								mb: 2,
-							}}
-						>
-							<a href="#">Forgot my password</a>
-						</Typography>
 						<FormControlLabel
-							sx={{ textAlign: "start !important" }}
+							sx={{ textAlign: "start !important", my: 2}}
 							control={<Checkbox defaultChecked />}
-							label={<span style={{ fontSize: "12px" }}>Remember me</span>}
+							label={<span style={{ fontSize: "16px" }}>Remember me</span>}
 						/>
 						<Button
 							type="submit"
 							fullWidth
 							variant="contained"
-							sx={{ mt: 3, mb: 3, borderRadius: 3, fontSize: "14px" }}
+							sx={{
+								mb: 2,
+								borderRadius: 1,
+								fontSize: "16px",
+								fontWeight: 700,
+							}}
 						>
-							Next
+							Log in {' '} <KeyboardArrowRightIcon  />
 						</Button>
 					</form>
+					<Divider
+						sx={{
+							backgroundColor: "gba(33, 33, 33, 0.3)",
+							mt: "40px",
+							mb: "30px",
+						}}
+					/>
+					<Typography sx={{ textAlign: "center" }}>
+						Don't have an account?  
+						<a
+							href="/signup"
+							style={{
+								fontWeight: 700,
+								color: "black",
+								textDecoration: "underline",
+							}}
+						>
+							Sign up 
+						</a>
+					</Typography>
 				</Box>
+				<Footer sx={{ marginBottom: 0 }} />
 			</Box>
-		</Container>
+		</Box>
 	);
 };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
 	updateObject,
 	updateObjectList,
@@ -18,8 +18,14 @@ import { updateAccount } from "@src/store/accountSlice";
 export const useApps = (onClose) => {
 	const { setAlert } = useAlert();
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const params = useParams();
+
 	const id = params.id;
+	const userId = params.userId;
+	const appName = params.appName;
+
+	const [loading, setLoading] = useState(true);
 
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -40,11 +46,14 @@ export const useApps = (onClose) => {
 		} else {
 			const objectNames = [];
 			for (const object of res.data) {
-				objectNames.push({ name: object.singularName, id: object._id });
+				objectNames.push({ name: object.singularName, pluralName: object.pluralName, id: object._id });
 				if (id && object._id === id) {
 					dispatch(updateObject(object));
 				}
 			}
+			
+			if(!id)
+				navigate(`/${appName}/${userId}/${objectNames[0].id}`);
 
 			dispatch(updateObjectList(objectNames));
 		}
@@ -89,9 +98,13 @@ export const useApps = (onClose) => {
 			const res = await Server.Acconut.getInfo();
 			dispatch(updateAccount(res.data));
 		}
-		fetchData();
-		fetchRecords();
-		fetchObject();
+		const dataPromise = fetchData();
+		const recordsPromise = fetchRecords();
+		const objectPromise = fetchObject();
+
+		Promise.all([dataPromise, recordsPromise, objectPromise]).then((value) => {
+			setLoading(false);
+		})
 
 		return () => {
 			dispatch(updateRecords([]));
@@ -110,12 +123,12 @@ export const useApps = (onClose) => {
 
 	const handleOpenEdit = () => {
 		if (app.selectedRecords.length === 0) {
-			setAlert("Select contact to edit", "error");
+			setAlert("Select record to edit", "error");
 			return;
 		}
 
 		if (app.selectedRecords.length > 1) {
-			setAlert("Select only one contact to edit", "error");
+			setAlert("Select only one record to edit", "error");
 			return;
 		}
 
@@ -128,7 +141,7 @@ export const useApps = (onClose) => {
 
 	const handleOpenDelete = () => {
 		if (app.selectedRecords.length === 0) {
-			setAlert("Select contact to delete", "error");
+			setAlert("Select record to delete", "error");
 			return;
 		}
 		setOpenDelete(true);
@@ -204,5 +217,6 @@ export const useApps = (onClose) => {
 		handleCloseDelete,
 		initValues,
 		handleDeleteRecord,
+		loading,
 	};
 };

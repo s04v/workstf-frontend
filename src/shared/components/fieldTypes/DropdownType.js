@@ -4,8 +4,6 @@ import { useState } from "react";
 const DropdownType = (props) => {
 	const [selected, setSelected] = useState("");
 	return (
-		<Box>
-			{props.preview && <Typography>Dropdown</Typography>}
 			<TextField
 				fullWidth
 				select
@@ -14,6 +12,7 @@ const DropdownType = (props) => {
 				placeholder="Select field type"
 				sx={{ backgroundColor: "white" }}
 				value={props.value}
+				label={props.label}
 				onChange={props.onChange}
 				// error={formik.touched.type && Boolean(formik.errors.type)}
 				// helperText={formik.touched.type && formik.errors.type}
@@ -22,7 +21,6 @@ const DropdownType = (props) => {
 					<MenuItem value={item}>{item}</MenuItem>
 				))}
 			</TextField>
-		</Box>
 	);
 };
 

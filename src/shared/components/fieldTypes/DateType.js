@@ -5,17 +5,13 @@ import { useEffect, useState } from "react";
 const DateType = (props) => {
 	const [state, setState] = useState("");
 
-	useEffect(() => {
-		console.log(new Date(state.$d).toLocaleDateString("en-US"));
-	}, [state]);
 	return (
-		<Box>
-			{props.preview && <Typography>Date</Typography>}
 			<DatePicker
 				sx={{ width: "100%" }}
+				label={props.label}
 				inputFormat="MM/DD/YYYY"
-				// name={props.name}
-				value={props.preview ? state : props.value}
+				error={false}
+				value={(props.preview ? state : props.value) || null}
 				onChange={
 					props.preview
 						? (val) => {
@@ -24,10 +20,9 @@ const DateType = (props) => {
 						: props.onChange
 				}
 				renderInput={(props) => (
-					<TextField fullWidth sx={{ backgroundColor: "white" }} {...props} />
+					<TextField fullWidth sx={{ backgroundColor: "white" }} error={false} {...props} />
 				)}
 			/>
-		</Box>
 	);
 };
 

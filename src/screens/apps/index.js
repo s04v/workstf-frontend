@@ -10,6 +10,10 @@ import {
 	TablePagination,
 	TableRow,
 	Typography,
+	Divider,
+	MenuItem,
+	TextField,
+	Menu,
 } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,6 +22,12 @@ import CreateRecordDrawer from "./components/createRecordDrawer";
 import EditRecordModal from "./components/editRecordModal";
 import DeleteRecordModal from "./components/deleteRecordModal";
 import { useApps } from "./useApps";
+import AddIcon from "@mui/icons-material/Add";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
+import useSelectObjectPopup from "./components/selectObjectPopup";
+import DataTableLoader from "./components/loader";
+import TextLoader from "./components/loader/TextLoader";
 
 const Apps = (props) => {
 	const {
@@ -40,101 +50,72 @@ const Apps = (props) => {
 		handleCloseEdit,
 		handleCloseDelete,
 		initValues,
+		loading
 	} = useApps();
 
+	const { SelectObjectPopup, handleSelectClick } = useSelectObjectPopup();
+
+	// if(!loading)
+	// 	return <DataTableLoader />
 	return (
 		<Box
 			key={props.key}
 			sx={{
-				mt: 4,
+				mx: 3,
 				mb: 4,
 				display: "flex",
+				flexDirection: "column",
 				height: "100%",
-				gap: 4,
 				position: "relative",
 			}}
 		>
-			<Box sx={{ width: "200px" }}>
-				{app.objectList?.map((object) => (
-					<Typography
-						sx={{
-							textAlign: "center",
-							mb: 2,
-							color: "black",
-							backgroundColor: params.id === object.id ? "#e4e4e4" : null,
-							borderRadius: "40px",
-							py: 1,
-						}}
-					>
-						<Link to={`/${params.appName}/${params.userId}/${object.id}`}>
-							<span style={{ color: "black" }}>{object.name}</span>
-						</Link>
-					</Typography>
-				))}
-			</Box>
+			<Typography
+				sx={{
+					my: 2,
+					fontSize: 16,
+				}}
+			>
+				{ loading ? <TextLoader width="400px" height="20px" /> : <> Home {"  /  "} {app.object.app === "crm" ? "CRM" : "Sales"} {"  /  "}{app.object.pluralName}</>}
+			</Typography>
 			<Box
 				sx={{
 					display: "flex",
 					flexDirection: "column",
 					backgroundColor: "white",
-					borderRadius: "20px",
-					padding: "20px",
-					width: "100%",
+					borderRadius: 1,
+					height: "100%",
+					boxShadow: "0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 3px rgba(0, 0, 0, 0.12)"
 				}}
 			>
-				<Box sx={{ display: "flex", gap: 4, alignItems: "center", pl: "4px" }}>
-					<Checkbox
-						color="primary"
-						inputProps={{
-							"aria-label": "select all desserts",
-						}}
-						onClick={handleSelectAllClick}
-						indeterminate={
-							app.selectedRecords?.length > 0 &&
-							app.selectedRecords?.length < app.records?.length
-						}
-						checked={
-							app.records?.length > 0 &&
-							app.selectedRecords?.length === app.records?.length
-						}
-					/>
-					<Typography fontSize="14px" color="primary.main">
-						{app.selectedRecords.length} Selected
-					</Typography>
+				<Box
+					sx={{
+						display: "flex",
+						gap: 4,
+						alignItems: "center",
+						borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+						px: 3,
+						py: 3
+					}}
+				>
 					<Typography
-						onClick={handleOpenEdit}
-						fontSize="14px"
-						color="primary.main"
 						sx={{
+							fontSize: 24,
+							fontWeight: 600,
 							display: "flex",
 							alignItems: "center",
-							gap: "4px",
-							cursor: "pointer",
+							gap: 1
 						}}
 					>
-						<EditIcon sx={{ fontSize: "20px", color: "black" }} />
-						<span>Edit</span>
-					</Typography>
-					<Typography
-						onClick={handleOpenDelete}
-						fontSize="14px"
-						color="primary.main"
-						sx={{
-							display: "flex",
-							alignItems: "center",
-							gap: "4px",
-							cursor: "pointer",
-						}}
-					>
-						<DeleteOutlineIcon sx={{ fontSize: "20px", color: "black" }} />
-						<span>Delete</span>
+						{loading ? <TextLoader /> : app.object.pluralName}
+						
+						<MoreVertIcon sx={{ cursor: "pointer", padding: "10px", borderRadius: "50%", ":hover": { backgroundColor: "rgba(33, 33, 33, 0.04)" } }} onClick={handleSelectClick} />
+						<SelectObjectPopup />
 					</Typography>
 					<Button
 						onClick={handleOpenCreate}
 						variant="contained"
 						sx={{
-							borderRadius: 3,
-							fontSize: "12px",
+							borderRadius: 1,
 							ml: "auto",
 							display: "flex",
 							alignItems: "center",
@@ -142,113 +123,197 @@ const Apps = (props) => {
 							cursor: "pointer",
 						}}
 					>
-						<b>Add record</b>
+						<AddIcon />
+						<Typography>Add {app.object.singularName}</Typography>
 					</Button>
 				</Box>
-
+					<Box
+						sx={{
+							px: 3,
+							py: 3,
+							display: "flex",
+							alignItems: "center",
+							background: "rgba(102, 162, 255, 0.08)",
+							gap: 2,
+							borderBottom: "1px solid rgba(0, 0, 0, 0.08)"
+						}}
+					>
+						<Typography sx={{ fontWeight: 600, fontSize: 14 }}>{app.selectedRecords.length} items selected</Typography>
+						<Divider
+							sx={{ backgroundColor: "rgba(0, 0, 0, 0.12)" }}
+							orientation="vertical"
+							flexItem
+						/>
+						<Typography
+							onClick={handleOpenEdit}
+							color="primary.main"
+							sx={{
+								display: "flex",
+								alignItems: "center",
+								gap: "10px",
+								cursor: "pointer",
+								padding: "4px 4px",
+								borderRadius: 1,
+								":hover": { backgroundColor: "rgba(33, 33, 33, 0.04)" }
+							}}
+						>
+							<EditIcon sx={{ fontSize: "20px", color: "black" }} />
+							<Typography sx={{ fontWeight: 600, fontSize: 14 }}>Edit</Typography>
+						</Typography>
+						<Typography
+							onClick={handleOpenDelete}
+							color="primary.main"
+							sx={{
+								display: "flex",
+								alignItems: "center",
+								gap: "10px",
+								cursor: "pointer",
+								padding: "4px 4px",
+								borderRadius: 1,
+								":hover": { backgroundColor: "rgba(33, 33, 33, 0.04)" }
+							}}
+						>
+							<DeleteIcon sx={{ fontSize: "20px", color: "black" }} />
+							<Typography sx={{ fontWeight: 600, fontSize: 14 }}>Delete</Typography>
+						</Typography>
+					</Box>
 				<Table sx={{ minWidth: 550 }} aria-labelledby="tableTitle">
-					<TableHead>
-						<TableRow sx={{ color: "grey" }}>
-							<TableCell padding="checkbox">{/* idle */}</TableCell>
-							{params.id && <TableCell>ID</TableCell>}
-							<TableCell>{app.object.primaryName}</TableCell>
-							{app.object.schema?.map((field) => (
-								<TableCell>{field.name}</TableCell>
-							))}
-							<TableCell>Create Date</TableCell>
-							<TableCell>Mofilied Date</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody sx={{ position: "relative" }}>
-						{}
-						{app.records.map((record) => {
-							const isRecordSelected = isSelected(record._id);
-							return (
-								<TableRow sx={{ padding: 4 }}>
-									{params.id && (
-										<>
-											<TableCell padding="checkbox">
-												<Checkbox
-													color="primary"
-													inputProps={{
-														"aria-label": "select all desserts",
-													}}
-													onClick={() => handleSelect(record)}
-													checked={isRecordSelected}
-												/>
-											</TableCell>
-											<TableCell>{record._id.substr(17)}</TableCell>
-											<TableCell>
-												{record.data[app.object.primaryName]}
-											</TableCell>
-										</>
-									)}
-									{console.log(record)}
-									{app.object.schema?.map((field) => {
-										if (field.type === "multipleCheckboxes") {
-											if (
-												[field.name] in record?.data &&
-												Object.keys(record?.data[field.name])
-											) {
-												const activeCheckboxes = Object.keys(
-													record?.data[field.name]
-												)
-													.map((item) =>
-														record?.data[field.name][item][0] ? item : null
-													)
-													.filter((item) => item !== null);
-												return (
-													<TableCell>{activeCheckboxes.join("; ")}</TableCell>
-												);
+					{loading ? <DataTableLoader /> : (
+						<>
+							<TableHead>
+								<TableRow sx={{ color: "grey" }}>
+									<TableCell padding="checkbox" sx={{ pl:1.7 }}>
+									<Checkbox
+										sx={{
+											color: "black",
+											"&.Mui-checked": {
+												color: '#4787EA'
 											}
-											return <TableCell></TableCell>;
+										}}
+										color="primary"
+										inputProps={{
+											"aria-label": "select all desserts",
+										}}
+										onClick={handleSelectAllClick}
+										indeterminate={
+											app.selectedRecords?.length > 0 &&
+											app.selectedRecords?.length < app.records?.length
 										}
-
-										return (
-											<TableCell>
-												{field.type === "date"
-													? new Date(
-															record.data[field.name]
-													  ).toLocaleDateString("es-ES")
-													: record.data[field.name]}
-											</TableCell>
-										);
-									})}
-									<TableCell>
-										{new Date(record.createDate).toLocaleDateString("es-ES")}
+										checked={
+											app.records?.length > 0 &&
+											app.selectedRecords?.length === app.records?.length
+										}
+									/>
 									</TableCell>
-									<TableCell>
-										{new Date(record.updateDate).toLocaleDateString("es-ES")}
-									</TableCell>
-									{/* <TableCell>{contact.firstName}</TableCell>
-                                  <TableCell>{contact.lastName}</TableCell>
-                                  <TableCell>{contact.email}</TableCell>
-                                  <TableCell>{contact.phoneNumber}</TableCell>
-                                  <TableCell><span style={{padding: 3, backgroundColor: '#f7f7f7', borderRadius: '20px'}}>{new Date(contact.createDate).toLocaleDateString("en-US")} {new Date(contact.createDate).toLocaleTimeString("en-US", {hour: 'numeric', minute: 'numeric'})}</span></TableCell>
-                                  <TableCell><span style={{padding: 3, backgroundColor: '#f7f7f7', borderRadius: '20px'}}>{new Date(contact.updateDate).toLocaleDateString("en-US")} {new Date(contact.updateDate).toLocaleTimeString("en-US", {hour: 'numeric', minute: 'numeric'})}</span></TableCell>
-                                  <TableCell>{contact.country}</TableCell>
-                                  <TableCell>{contact.company}</TableCell> */}
+									{params.id && <TableCell>ID</TableCell>}
+									<TableCell>{app.object.primaryName}</TableCell>
+									{app.object.schema?.map((field) => (
+										<TableCell>{field.name}</TableCell>
+									))}
+									<TableCell>Create Date</TableCell>
+									<TableCell>Mofilied Date</TableCell>
 								</TableRow>
-							);
-						})}
-						{app.records?.length === 0 ? (
-							<Box
-								sx={{
-									width: "100%",
-									position: "absolute",
-									textAlign: "center",
-									marginTop: "15%",
-									bottom: 0,
-									top: 0,
-									color: "grey",
-								}}
-							>
-								Not found
-							</Box>
-						) : (
-							""
-						)}
-					</TableBody>
+							</TableHead>
+							<TableBody sx={{ position: "relative" }}>
+								{app.records.map((record) => {
+									console.log("record", record);
+									const isRecordSelected = isSelected(record._id);
+									return (
+										<TableRow sx={{ 
+											padding: 4,
+											":hover": { "#editButton": { display: "flex" }, backgroundColor: "rgba(0, 0, 0, 0.04)" },
+											backgroundColor: isRecordSelected ? "rgba(102, 162, 255, 0.08) !important" : ""
+										}}>
+											{params.id && (
+												<>
+													<TableCell padding="checkbox" sx={{ pl:1.7 }}>
+														<Checkbox
+															sx={{
+																color: "black",
+																"&.Mui-checked": {
+																	color: '#4787EA'
+																}
+															}}
+															inputProps={{
+																"aria-label": "select all desserts",
+															}}
+															onClick={() => handleSelect(record)}
+															checked={isRecordSelected}
+														/>
+													</TableCell>
+													<TableCell>{record._id.substr(17)}</TableCell>
+													<TableCell>
+														{record.data[app.object.primaryName]}
+													</TableCell>
+												</>
+											)}
+											{app.object.schema?.map((field) => {
+												if (field.type === "multipleCheckboxes") {
+													if (
+														[field.name] in record?.data &&
+														Object.keys(record?.data[field.name])
+													) {
+														const activeCheckboxes = Object.keys(
+															record?.data[field.name]
+														)
+															.map((item) =>
+																record?.data[field.name][item][0] ? item : null
+															)
+															.filter((item) => item !== null);
+														return (
+															<TableCell>{activeCheckboxes.join("; ")}</TableCell>
+														);
+													}
+													return <TableCell></TableCell>;
+												}
+
+												return (
+													<TableCell>
+														{field.type === "date"
+															? new Date(
+																	record.data[field.name]
+																).toLocaleDateString("es-ES")
+															: record.data[field.name]}
+													</TableCell>
+												);
+											})}
+											<TableCell>
+												{new Date(record.createDate).toLocaleDateString("es-ES")}
+											</TableCell>
+											<TableCell>
+												{new Date(record.updateDate).toLocaleDateString("es-ES")}
+											</TableCell>
+											{/* <TableCell>{contact.firstName}</TableCell>
+																			<TableCell>{contact.lastName}</TableCell>
+																			<TableCell>{contact.email}</TableCell>
+																			<TableCell>{contact.phoneNumber}</TableCell>
+																			<TableCell><span style={{padding: 3, backgroundColor: '#f7f7f7', borderRadius: '20px'}}>{new Date(contact.createDate).toLocaleDateString("en-US")} {new Date(contact.createDate).toLocaleTimeString("en-US", {hour: 'numeric', minute: 'numeric'})}</span></TableCell>
+																			<TableCell><span style={{padding: 3, backgroundColor: '#f7f7f7', borderRadius: '20px'}}>{new Date(contact.updateDate).toLocaleDateString("en-US")} {new Date(contact.updateDate).toLocaleTimeString("en-US", {hour: 'numeric', minute: 'numeric'})}</span></TableCell>
+																			<TableCell>{contact.country}</TableCell>
+																			<TableCell>{contact.company}</TableCell> */}
+										</TableRow>
+									);
+								})}
+								{app.records?.length === 0 ? (
+									<Box
+										sx={{
+											width: "100%",
+											position: "absolute",
+											textAlign: "center",
+											marginTop: "15%",
+											bottom: 0,
+											top: 0,
+											color: "grey",
+										}}
+									>
+										Not found
+									</Box>
+								) : (
+									""
+								)}
+							</TableBody>
+						</>
+					)}
 				</Table>
 				<TablePagination
 					rowsPerPageOptions={[5, 10, 25]}

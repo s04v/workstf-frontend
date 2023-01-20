@@ -3,22 +3,26 @@ import {
 	Button,
 	Checkbox,
 	Divider,
+	Menu,
 	MenuItem,
 	Table,
 	TableBody,
 	TableCell,
+	TableContainer,
+	TableFooter,
 	TableHead,
 	TablePagination,
 	TableRow,
 	TextField,
 	Typography,
 } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 import { useFieldSettings } from "./useFieldSettings";
 import DeleteModal from "./components/deleteModal";
 import CreateDrawer from "./components/createDrawer";
+import AddIcon from "@mui/icons-material/Add";
 
 const FieldSettings = () => {
 	const {
@@ -48,35 +52,29 @@ const FieldSettings = () => {
 	return (
 		<Box
 			sx={{
-				py: "30px",
 				display: "flex",
 				flexDirection: "column",
 				backgroundColor: "white",
-				borderRadius: "20px",
 				width: "100%",
+				height: "100%",
+				pb: 3
 			}}
 		>
-			<Typography variant="h5" sx={{ px: "30px", fontWeight: 500 }}>
-				Custom object
-			</Typography>
 			<Box
 				sx={{
-					px: "30px",
-					marginTop: "10px ",
 					display: "flex",
 					flexDirection: "column",
+					px: 3
 				}}
 			>
 				<Box sx={{ display: "flex", gap: 3, alignItems: "center" }}>
-					<Typography sx={{ fontSize: "14px" }}>
-						<b>Select an object</b>
-					</Typography>
 					<TextField
 						select
-						sx={{ mb: 2, width: "200px" }}
+						sx={{ my: 4, width: "400px" }}
 						autoComplete="off"
 						name="selectedObject"
-						value={activeObject?.singularName}
+						label="Select a custom object"
+						value={activeObject && activeObject.singularName}
 					>
 						{objectList.map((object) => {
 							return (
@@ -90,33 +88,11 @@ const FieldSettings = () => {
 						})}
 					</TextField>
 				</Box>
-				<Box sx={{ position: "relative" }}>
-					<Typography
-						style={{
-							borderBottom: "1px solid black",
-							padding: "10px",
-							color: "blue",
-							fontSize: "14px",
-							color: "primary.main",
-							width: "85px",
-						}}
-					>
-						Configuration
-					</Typography>
-				</Box>
 			</Box>
-			<Divider />
-			<Typography
-				sx={{ fontSize: "14px", color: "grey", px: "30px", py: "20px" }}
-			>
-				Choose what information you collect about your object and how to keep
-				your records updated.
-			</Typography>
 			<Divider />
 			<Box sx={{ height: "100%" }}>
 				<Box
 					sx={{
-						mt: 2,
 						mb: 2,
 						display: "flex",
 						flexDirection: "column",
@@ -130,47 +106,22 @@ const FieldSettings = () => {
 							gap: 4,
 							alignItems: "center",
 							pl: "4px",
-							px: "20px",
+							px: 3,
+							my: 2,
 						}}
 					>
-						<Checkbox
-							color="primary"
-							inputProps={{
-								"aria-label": "select all desserts",
-							}}
-							onClick={handleSelectAllClick}
-							indeterminate={
-								fields.selected.length > 0 &&
-								fields.selected.length < fields.visible.length
-							}
-							checked={
-								fields.visible?.length > 0 &&
-								fields.selected?.length === fields.visible?.length
-							}
-						/>
-						<Typography fontSize="14px" color="primary.main">
-							{fields.selected.length} Selected
-						</Typography>
 						<Typography
-							onClick={handleOpenDelete}
-							fontSize="14px"
-							color="primary.main"
 							sx={{
-								display: "flex",
-								alignItems: "center",
-								gap: "4px",
-								cursor: "pointer",
+								fontSize: 20,
 							}}
 						>
-							<DeleteOutlineIcon sx={{ fontSize: "20px", color: "black" }} />
-							<span>Delete</span>
+							Fields
 						</Typography>
 						<Button
 							onClick={handleOpenCreate}
 							variant="contained"
 							sx={{
-								borderRadius: 3,
-								fontSize: "12px",
+								borderRadius: 1,
 								ml: "auto",
 								display: "flex",
 								alignItems: "center",
@@ -178,104 +129,176 @@ const FieldSettings = () => {
 								cursor: "pointer",
 							}}
 						>
-							Create field
+							<AddIcon /> 
+							<Typography>Add field</Typography>
 						</Button>
 					</Box>
-					<Table sx={{ minWidth: 550 }} aria-labelledby="tableTitle">
-						<TableHead>
-							<TableRow sx={{ color: "grey" }}>
-								<TableCell padding="checkbox" sx={{ ml: "20px" }}></TableCell>
-								<TableCell width="20%">Name</TableCell>
-								<TableCell>Type</TableCell>
-								<TableCell>Created by</TableCell>
-								<TableCell>Create date</TableCell>
-								<TableCell>Modified date</TableCell>
-								<TableCell>Modifyed by</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody sx={{ position: "relative" }}>
-							{activeObject.schema && activeObject.schema.length !== 0 ? (
-								fields.visible?.map((field) => {
-									const isFieldSelected = isSelected(field._id);
-
-									return (
-										<TableRow
+					<Box
+						sx={{
+							boxShadow:
+								"0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 3px rgba(0, 0, 0, 0.12)",
+							mx: 3,
+							height: "100%"
+						}}
+					>
+						<Box
+							sx={{
+								px: "28px",
+								py: 3,
+								display: "flex",
+								background: "rgba(102, 162, 255, 0.08)",
+								gap: 2,
+							}}
+						>
+							<Typography sx={{ fontWeight: 600 }}>{fields.selected.length} items selected</Typography>
+							<Divider
+								sx={{ backgroundColor: "rgba(0, 0, 0, 0.12)" }}
+								orientation="vertical"
+								flexItem
+							/>
+							<Typography
+								onClick={handleOpenDelete}
+								color="primary.main"
+								sx={{
+									display: "flex",
+									alignItems: "center",
+									gap: "4px",
+									cursor: "pointer",
+								}}
+							>
+								<DeleteIcon sx={{ fontSize: "20px", color: "black" }} />
+								<Typography sx={{ fontWeight: 600 }}>Delete</Typography>
+							</Typography>
+						</Box>
+						<Table sx={{ minWidth: 550, mb: 4, }} >
+							<TableHead>
+								<TableRow>
+									<TableCell padding="checkbox" sx={{ pl:2 }}>
+										<Checkbox
 											sx={{
-												padding: 4,
-												":hover": { "#editButton": { display: "flex" } },
+												color: "black",
+												"&.Mui-checked": {
+													color: '#4787EA'
+												}
 											}}
-										>
-											<TableCell padding="checkbox" sx={{ pl: "20px" }}>
-												<Checkbox
-													color="primary"
-													inputProps={{
-														"aria-label": "select all desserts",
-													}}
-													onClick={() => handleSelect(field)}
-													checked={isFieldSelected}
-												/>
-											</TableCell>
-											<TableCell sx={{ display: "flex", gap: 3 }}>
-												{field.name}
-												<Box
-													onClick={() => handleOpenEdit(field)}
-													fontSize="14px"
-													color="primary.main"
-													id="editButton"
-													sx={{
-														display: "none",
-														alignItems: "center",
-														gap: "4px",
-														cursor: "pointer",
-													}}
-												>
-													<EditIcon sx={{ fontSize: "18px", color: "black" }} />
-													<span>Edit</span>
-												</Box>
-											</TableCell>
-											<TableCell>{field.typeName}</TableCell>
-											<TableCell>You </TableCell>
-											<TableCell>
-												{new Date(field.createdDate).toLocaleDateString(
-													"en-US"
-												)}
-											</TableCell>
-											<TableCell>
-												{new Date(field.modifiedDate).toLocaleDateString(
-													"en-US"
-												)}
-											</TableCell>
-											<TableCell>You</TableCell>
-										</TableRow>
-									);
-								})
-							) : (
-								<Box
-									sx={{
-										width: "100%",
-										position: "absolute",
-										textAlign: "center",
-										marginTop: "10%",
-										bottom: 0,
-										top: 0,
-										color: "grey",
-									}}
-								>
-									No found fields
-								</Box>
-							)}
-						</TableBody>
-					</Table>
-					<TablePagination
-						sx={{ mr: "20px", mt: "auto" }}
-						rowsPerPageOptions={[5, 10, 25]}
-						component="div"
-						count={activeObject.schema?.length}
-						rowsPerPage={rowsPerPage}
-						page={page}
-						onPageChange={handleChangePage}
-						onRowsPerPageChange={handleChangeRowsPerPage}
-					/>
+											color="primary"
+											inputProps={{
+												"aria-label": "select all desserts",
+											}}
+											onClick={handleSelectAllClick}
+											indeterminate={
+												fields.selected.length > 0 &&
+												fields.selected.length < fields.visible.length
+											}
+											checked={
+												fields.visible?.length > 0 &&
+												fields.selected?.length === fields.visible?.length
+											}
+										/>
+									</TableCell>
+									<TableCell width="20%" >Name</TableCell>
+									<TableCell>Type</TableCell>
+									<TableCell>Created by</TableCell>
+									<TableCell>Create date</TableCell>
+									<TableCell>Modified date</TableCell>
+									<TableCell>Modifyed by</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody sx={{ position: "relative" }} >
+								{activeObject && activeObject?.schema?.length !== 0 ? (
+									fields.visible?.map((field) => {
+										const isFieldSelected = isSelected(field._id);
+										return (
+											<TableRow
+												sx={{
+													// padding: 4,
+													":hover": { "#editButton": { display: "flex" }, backgroundColor: "rgba(0, 0, 0, 0.04)" },
+													backgroundColor: isFieldSelected ? "rgba(102, 162, 255, 0.08) !important" : ""
+												}}
+											>
+												<TableCell padding="checkbox" sx={{ pl: 2 }}>
+													<Checkbox
+														sx={{
+															color: "black",
+															"&.Mui-checked": {
+																color: '#4787EA'
+															}
+														}}
+														// color="primary"
+														inputProps={{
+															"aria-label": "select all desserts",
+														}}
+														onClick={() => handleSelect(field)}
+														checked={isFieldSelected}
+													/>
+												</TableCell>
+												<TableCell sx={{ display: "flex", gap: 3 }}>
+													{field.name}
+													<Box
+														onClick={() => handleOpenEdit(field)}
+														fontSize="14px"
+														color="primary.main"
+														id="editButton"
+														sx={{
+															display: "none",
+															alignItems: "center",
+															gap: "4px",
+															cursor: "pointer",
+														}}
+													>
+														<EditIcon
+															sx={{ fontSize: "18px", color: "black" }}
+														/>
+														<span>Edit</span>
+													</Box>
+												</TableCell>
+												<TableCell>{field.typeName}</TableCell>
+												<TableCell>You </TableCell>
+												<TableCell>
+													{new Date(field.createdDate).toLocaleDateString(
+														"en-US"
+													)}
+												</TableCell>
+												<TableCell>
+													{new Date(field.modifiedDate).toLocaleDateString(
+														"en-US"
+													)}
+												</TableCell>
+												<TableCell>You</TableCell>
+											</TableRow>
+										);
+									})
+								) : (
+									<Box
+										sx={{
+											width: "100%",
+											position: "absolute",
+											textAlign: "center",
+											marginTop: "10%",
+											bottom: 0,
+											top: 0,
+											color: "grey",
+										}}
+									>
+										No found fields
+									</Box>
+								)}
+							</TableBody>
+						</Table>
+						<TablePagination
+							sx={{ mr: "20px", mt: "auto",
+							position: "absolute",
+							bottom: 20,
+							right: 0 }}
+							rowsPerPageOptions={[5, 10, 25]}
+							component="div"
+							count={activeObject?.schema?.length}
+							rowsPerPage={rowsPerPage}
+							page={page}
+							onPageChange={handleChangePage}
+							onRowsPerPageChange={handleChangeRowsPerPage}
+						/>
+					</Box>
 				</Box>
 			</Box>
 			<DeleteModal open={openDelete} onClose={handleCloseDelete} />

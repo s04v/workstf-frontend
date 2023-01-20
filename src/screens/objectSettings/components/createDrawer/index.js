@@ -18,12 +18,13 @@ const CreateDrawer = ({ open, onClose }) => {
 			anchor={"right"}
 			open={open}
 			PaperProps={{
-				sx: { width: "40%" },
+				sx: { width: "521px" },
 			}}
 		>
 			<Box
 				sx={{
 					display: "flex",
+					alignItems: "center",
 					gap: 2,
 					backgroundColor: "primary.main",
 					px: 4,
@@ -31,63 +32,63 @@ const CreateDrawer = ({ open, onClose }) => {
 					color: "white",
 				}}
 			>
-				<CloseIcon sx={{ fontSize: "24px" }} onClick={handleClose} />
-				<Typography sx={{ fontSize: "18px" }}>
-					<b>Create custom object</b>
+				<CloseIcon sx={{ fontSize: "24px", cursor: "pointer" }} onClick={handleClose} />
+				<Typography sx={{ fontSize: "22px" }}>
+					Create custom object
 				</Typography>
 			</Box>
 			<Box
 				sx={{
 					display: "flex",
 					flexDirection: "column",
+					height: "100%"
 				}}
 			>
-				<form onSubmit={formik.handleSubmit}>
-					<Box sx={{ px: 4, py: 5 }}>
-						<Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+				<form onSubmit={formik.handleSubmit} style={{ display: "flex", flexDirection: "column", height: "100%"}}>
+					<Box sx={{width: "100%"}}>
+						<Typography variant="h6" sx={{ backgroundColor: "#F7F7F7", fontWeight: 700, py: 1.5, px: 4 }}>
 							Choose application
 						</Typography>
-						<Typography sx={{ fontSize: "12px", color: "grey", mb: 2 }}>
-							Custom object can only be created in existing application
+						<Typography sx={{ fontSize: "14px", color: "grey", py: 2, px: 4, mb: 1, borderBottom: "1px solid rgba(33, 33, 33, 0.12);" }}>
+							Associate you object with an app (optional):
 						</Typography>
-						<Typography sx={{ fontSize: "12px" }}>
-							Select an application where to create custom object? *
-						</Typography>
-						<TextField
-							select
-							sx={{ my: 2, width: "250px", fontSize: "14px" }}
-							autoComplete="off"
-							name="app"
-							value={formik.values.app}
-							onChange={formik.handleChange}
-							error={formik.touched.app && Boolean(formik.errors.app)}
-							helperText={formik.touched.app && formik.errors.app}
-						>
-							<MenuItem value="sales" sx={{ fontSize: "14px" }}>
-								Sales
-							</MenuItem>
-							<MenuItem value="crm" sx={{ fontSize: "14px" }}>
-								CRM
-							</MenuItem>
-						</TextField>
+						<Box sx={{ px: 4,}}>
+							<TextField
+								fullWidth
+								select
+								sx={{ my: 3, fontSize: "16px" }}
+								autoComplete="off"
+								name="app"
+								label="Select an application"
+								value={formik.values.app}	
+								onChange={formik.handleChange}
+								error={formik.touched.app && Boolean(formik.errors.app)}
+								helperText={formik.touched.app && formik.errors.app}
+							>
+								<MenuItem value="sales" sx={{ fontSize: "14px" }}>
+									Sales
+								</MenuItem>
+								<MenuItem value="crm" sx={{ fontSize: "14px" }}>
+									CRM
+								</MenuItem>
+							</TextField>
+						</Box>
 					</Box>
-					<Divider />
-					<Box sx={{ px: 4, py: 5 }}>
-						<Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-							Configure your new custom object{" "}
-						</Typography>
-						<Typography sx={{ fontSize: "12px", color: "grey", mb: 2 }}>
+					<Box sx={{ }}>
+							<Typography variant="h6" sx={{ backgroundColor: "#F7F7F7", fontWeight: 700, py: 1.5, px: 4}}>
+								Configure your new custom object{" "}
+							</Typography>
+						<Typography sx={{ fontSize: "14px", px: 4, color: "grey", py: 2,  borderBottom: "1px solid rgba(33, 33, 33, 0.12);" }}>
 							These settings can't be chenged later.
 						</Typography>
-						<Box sx={{ display: "flex", gap: 3 }}>
-							<Box>
-								<Typography sx={{ fontSize: "12px" }}>
-									Object Name (Singular) *
-								</Typography>
+						<Box sx={{ width: "100%", py: 3}}>
+							<Box sx={{ px: 4, marginBottom: "25px" }}>
 								<TextField
-									sx={{ width: "250px", fontSize: "14px" }}
+									fullWidth
+									sx={{ fontSize: "14px" }}
 									autoComplete="off"
 									name="singularName"
+									label="Object Name (Singular) *"
 									value={formik.values.singularName}
 									onChange={formik.handleChange}
 									error={
@@ -99,14 +100,13 @@ const CreateDrawer = ({ open, onClose }) => {
 									}
 								/>
 							</Box>
-							<Box>
-								<Typography sx={{ fontSize: "12px" }}>
-									Object name (Plural) *
-								</Typography>
+							<Box sx={{ px: 4 }}>
 								<TextField
-									sx={{ width: "250px", fontSize: "14px" }}
+									fullWidth
+									sx={{ fontSize: "14px" }}
 									autoComplete="off"
 									name="pluralName"
+									label="Object name (Plural) *"
 									value={formik.values.pluralName}
 									onChange={formik.handleChange}
 									error={
@@ -120,24 +120,22 @@ const CreateDrawer = ({ open, onClose }) => {
 							</Box>
 						</Box>
 					</Box>
-					<Divider />
-					<Box sx={{ px: 4, py: 5 }}>
-						<Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+					<Box sx={{}}>
+						<Typography variant="h6" sx={{ backgroundColor: "#F7F7F7", fontWeight: 700, py: 1.5, px: 4}}>
 							Create your primary field
 						</Typography>
-						<Typography sx={{ fontSize: "12px", color: "grey", mb: 2 }}>
-							This filed will be the name for each of yours records. Example.
-							Opportunity name.
+						<Typography sx={{ fontSize: "14px", px: 4, color: "grey", py: 2,  borderBottom: "1px solid rgba(33, 33, 33, 0.12);" }}>
+							This filed will be the name for each of yours records. Example. Opportunity name.
 						</Typography>
-						<Box sx={{ display: "flex", gap: 3 }}>
-							<Box>
-								<Typography sx={{ fontSize: "12px" }}>
-									Primary field name *
-								</Typography>
+						
+						<Box sx={{ my: 3 }}>
+							<Box sx={{px: 4, marginBottom: "25px" }}>
 								<TextField
-									sx={{ width: "250px", fontSize: "14px" }}
+									fullWidth
+									sx={{ fontSize: "14px" }}
 									autoComplete="off"
 									name="primaryName"
+									label="Primary field name *"
 									value={formik.values.primaryName}
 									onChange={formik.handleChange}
 									error={
@@ -149,15 +147,14 @@ const CreateDrawer = ({ open, onClose }) => {
 									}
 								/>
 							</Box>
-							<Box>
-								<Typography sx={{ fontSize: "12px" }}>
-									Primary field type *
-								</Typography>
+							<Box sx={{ px: 4 }}>
 								<TextField
+									fullWidth
 									select
-									sx={{ width: "250px", fontSize: "14px" }}
+									sx={{ fontSize: "14px" }}
 									autoComplete="off"
 									name="primaryType"
+									label="Primary field type *"
 									value={formik.values.primaryType}
 									onChange={formik.handleChange}
 									error={
@@ -178,31 +175,30 @@ const CreateDrawer = ({ open, onClose }) => {
 							</Box>
 						</Box>
 					</Box>
-					<Divider />
-					<Box sx={{ px: 4 }}>
+					<Box sx={{ mt: "auto", px: 4, backgroundColor: "#FBFBFB", borderTop: "1px solid rgba(196, 196, 196, 0.29)"}}>
 						<Button
 							type="submit"
 							variant="contained"
 							sx={{
-								padding: "12px 45px",
+								padding: "7px 35px",
 								mt: 3,
 								mb: 3,
 								mr: 2,
-								borderRadius: 3,
-								fontSize: "12px",
+								borderRadius: 1,
+								fontSize: "16px"
 							}}
 						>
-							<b>Create</b>
+							<b>Create Object</b>
 						</Button>
 						<Button
 							onClick={handleClose}
 							variant="outlined"
 							sx={{
-								padding: "12px 45px",
+								padding: "7px 35px",
 								mt: 3,
 								mb: 3,
-								borderRadius: 3,
-								fontSize: "12px",
+								borderRadius: 1,
+								fontSize: "16px"
 							}}
 						>
 							<b>Cancel</b>

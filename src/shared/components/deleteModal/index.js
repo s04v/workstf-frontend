@@ -6,30 +6,31 @@ const style = {
 	top: "50%",
 	left: "50%",
 	transform: "translate(-50%, -50%)",
-	width: 400,
+	width: 444,
 	bgcolor: "background.paper",
+	borderTopLeftRadius: "4px",
+	borderTopRightRadius: "4px",
 	boxShadow: 24,
-	borderRadius: "20px",
 	border: 0,
 };
 
 const DeleteModal = ({ open, title, message, handleDelete, onClose }) => {
 	return (
 		<Modal open={open} sx={{ outline: "none" }} disableAutoFocus={true}>
-			<Box sx={{ ...style, width: 400 }}>
+			<Box sx={{ ...style }}>
 				<Box
 					sx={{
-						backgroundColor: "#d71111",
+						backgroundColor: "#C63A41",
 						color: "white",
 						padding: 3,
-						borderTopLeftRadius: "20px",
-						borderTopRightRadius: "20px",
+						borderTopLeftRadius: "4px",
+						borderTopRightRadius: "4px",
 						display: "flex",
 						justifyContent: "space-between",
 					}}
 				>
 					{/* <b>Detele {selected.length} contacts</b>{' '} */}
-					<b>{title}</b>{" "}
+					{title}
 					<CloseIcon
 						sx={{ fontSize: "24px", cursor: "pointer" }}
 						onClick={onClose}
@@ -40,11 +41,13 @@ const DeleteModal = ({ open, title, message, handleDelete, onClose }) => {
 						padding: 3,
 					}}
 				>
-					<Typography color="grey" fontSize="12px" sx={{ mb: 3 }}>
-						{" "}
+					<Typography color="#212121"  sx={{ mb: 3 }}>
 						{message}
 						{/* You are about to delete {selected.length} records. Deleted records
             can't be restored and will be deleted permanently. */}
+					</Typography>
+					<Typography color="#C63A41"  sx={{ mb: 3 }}>
+						This action cannot be reverted.
 					</Typography>
 
 					<Button
@@ -52,10 +55,9 @@ const DeleteModal = ({ open, title, message, handleDelete, onClose }) => {
 						variant="contained"
 						sx={{
 							px: 4,
-							py: 1,
+							py: 0.7,
 							mr: 2,
-							fontSize: 12,
-							backgroundColor: "#d71111",
+							backgroundColor: "#C63A41",
 							":hover": { backgroundColor: "red" },
 						}}
 					>
@@ -69,7 +71,6 @@ const DeleteModal = ({ open, title, message, handleDelete, onClose }) => {
 							border: 2,
 							borderColor: "#d71111",
 							color: "#d71111",
-							fontSize: 12,
 							":hover": { border: 2 },
 						}}
 					>
