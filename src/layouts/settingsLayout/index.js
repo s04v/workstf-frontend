@@ -46,42 +46,7 @@ const SettingsLayout = (props) => {
 					width: "100%",
 				}}
 			>
-				<Box sx={{ backgroundColor: "#F7F7F7", px: 3}}>
-					<Typography sx={{ fontWeight: 500, fontSize: 16, my: "19px" }}>
-					Home {"  /  "} Settings {"  /  "} Objects {"  /  "} {activeObject?.singularName || "Custom object"}
-					</Typography>
-					<Typography sx={{ fontWeight: 700, fontSize: "24px", mb: 2 }}>
-						{/* {activeObject?.singularName || "Custom object"} */}
-						Custom objects
-					</Typography>
-				</Box>
 				
-				{activeObject ? <Box sx={{ position: "relative", display: "flex", ml: 3}}>
-						<Box
-							onClick={() => setTab(0)}
-							style={{
-								borderBottom: !tab ? "2px solid #4787EA" : "",
-								padding: "10px",
-								color: !tab ? "#4787EA" : "black",
-								cursor: "pointer"
-							}}
-						>
-							Configuration
-						</Box>
-
-						<Box
-							onClick={() => setTab(1)}
-							style={{
-								borderBottom: tab ? "2px solid #4787EA": "",
-								padding: "10px",
-								color: tab ? "#4787EA" : "black",
-								cursor: "pointer"
-							}}
-						>
-							Fields
-						</Box>
-				</Box> : ""}
-				<Divider sx={{ mt: "0px" }} />
 				{ React.cloneElement(props.children, { tab }) }
 			</Box>}
 		</Box>

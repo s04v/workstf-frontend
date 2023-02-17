@@ -5,6 +5,9 @@ const Object = {
 	create: async (data) => {
 		return await resolve(Http.post("/object", data).then((res) => res.data));
 	},
+	update: async (id, data) => {
+	  return await resolve(Http.patch(`/object/${id}`, data).then(res => res.data));
+	},
 	getByAppName: async (appName) => {
 		return await resolve(
 			Http.get(`/object/${appName}`).then((res) => res.data)
@@ -14,7 +17,7 @@ const Object = {
 		return await resolve(Http.get("/object").then((res) => res.data));
 	},
 	get: async (id) => {
-		return await resolve(Http.get(`/object/App/${id}`)).then((res) => res.data);
+		return await resolve(Http.get(`/object/app/${id}`)).then((res) => res.data);
 	},
 	delete: async (id) => {
 		return await resolve(Http.delete(`/object/appaname/${id}`).then((res) => res.data));
@@ -39,6 +42,13 @@ const Object = {
 			Http.post(`/object/${objectId}/record`, data).then((res) => res.data)
 		);
 	},
+	getRecord: async (objectId, recordId) => {
+		return await resolve(
+			Http.get(`/object/${objectId}/record/${recordId}`).then(
+				(res) => res.data
+			)
+		);
+	},
 	getRecords: async (objectId, skip = 0, take = 5) => {
 		return await resolve(
 			Http.get(`/object/${objectId}/record?skip=${skip}&take=${take}`).then(
@@ -56,9 +66,6 @@ const Object = {
 			Http.delete(`/object/${objectId}/record/${id}`).then((res) => res.data)
 		);
 	},
-	// update: async (id, data) => {
-	//   return await resolve(Http.patch(`/object/${appName}/${id}`).then(res => res.data));
-	// }
 };
 
 export default Object;

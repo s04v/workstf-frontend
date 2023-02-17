@@ -7,6 +7,8 @@ import Home from "@src/screens/home";
 import ObjectSettings from "@src/screens/objectSettings";
 import Signin from "@src/screens/signin";
 import Signup from "@src/screens/signup";
+import AppSettings from "@src/screens/appSettings";
+import SingleRecord from "@src/screens/singleRecord";
 
 const routes = [
 	{
@@ -39,6 +41,24 @@ const routes = [
 		exact: true,
 		Component: Apps,
 		Layout: BasePage,
+	},
+	{
+		path: "/:appName/:userId/:objectId/:recordId",
+		auth: true,
+		exact: true,
+		Component: SingleRecord,
+		Layout: BasePage,
+	},
+	{
+		path: "/settings/custom-app",
+		auth: true,
+		exact: true,
+		Component: AppSettings,
+		Layout: ({ children }) => (
+			<BasePage>
+				<SettingsLayout>{children}</SettingsLayout>
+			</BasePage>
+		),
 	},
 	{
 		path: "/settings",

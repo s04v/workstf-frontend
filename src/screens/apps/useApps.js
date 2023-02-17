@@ -37,23 +37,32 @@ export const useApps = (onClose) => {
 	const app = useSelector((state) => state.app);
 	const selectedRecords = useSelector((state) => state.app.selectedRecords);
 	const [initValues, setInitValues] = useState({});
+ 
+	const navigateToSingleRecord = (recordId, objectName) => {
+		const backPath = window.location.pathname;
+		navigate(`${window.location.pathname}/${recordId}`, { state: { objectName, backPath } })
+	}
 
 	const fetchObject = async () => {
+		console.log("params", params);
 		const appName = params.appName;
-		const res = await Server.Object.getByAppName(appName);
+		// const res = await Server.Object.getByAppName(appName);
+		const res = await Server.App.get(appName);
+		console.log("appName", appName);
+		console.log("app res", res);
 		if (res.error) {
 			setAlert("Server error", "error");
 		} else {
 			const objectNames = [];
-			for (const object of res.data) {
+			for (const object of res.data.associations) {
 				objectNames.push({ name: object.singularName, pluralName: object.pluralName, id: object._id });
 				if (id && object._id === id) {
 					dispatch(updateObject(object));
 				}
 			}
 			
-			if(!id)
-				navigate(`/${appName}/${userId}/${objectNames[0].id}`);
+			if(!id && objectNames.length > 0)
+				navigate(`/${appName}/${userId}/${objectNames[0]?.id}`);
 
 			dispatch(updateObjectList(objectNames));
 		}
@@ -204,6 +213,7 @@ export const useApps = (onClose) => {
 		openEdit,
 		openDelete,
 		app,
+		navigateToSingleRecord,
 		isSelected,
 		handleSelectAllClick,
 		handleSelect,

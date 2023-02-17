@@ -11,4 +11,5 @@ export const store = configureStore({
 		settings: settingsSlice,
 		app: appSlice,
 	},
+	devTools: true,
 });

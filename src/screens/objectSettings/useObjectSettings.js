@@ -10,8 +10,10 @@ import { useAlert } from "@src/providers/alert";
 
 export const useObjectsSettings = () => {
 	const [openCreateObject, setOpenCreateObject] = useState(false);
+	const [openEditObject, setOpenEditObject] = useState(false);
 	const dispatch = useDispatch();
 	const { setAlert } = useAlert();
+	const [openDelete, setOpenDelete] = useState(false);
 	const objectList = useSelector((state) => state.settings.objectList);
 	const activeObject = useSelector((state) => state.settings.activeObject);
 	const [loading, setLoading] = useState(true);
@@ -48,14 +50,26 @@ export const useObjectsSettings = () => {
 	const handleOpenDrawer = () => setOpenCreateObject(true);
 	const handleCloseDrawer = () => setOpenCreateObject(false);
 
+	const handleOpenEditDrawer = () => setOpenEditObject(true);
+	const handleCloseEditDrawer = () => setOpenEditObject(false);
+
+	const handleOpenDeleteModal = () => setOpenDelete(true);
+	const handleCloseDelete = () => setOpenDelete(false);
+
 	return {
 		openCreateObject,
+		openEditObject,
 		objectList,
 		activeObject,
+		handleOpenEditDrawer,
+		handleCloseEditDrawer,
 		handleChangeObject,
 		handleOpenDrawer,
 		handleCloseDrawer,
 		loading,
-		handleDelete
+		handleDelete,
+		openDelete,
+		handleCloseDelete,
+		handleOpenDeleteModal
 	};
 };

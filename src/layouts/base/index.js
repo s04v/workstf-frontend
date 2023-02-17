@@ -11,10 +11,23 @@ import Footer from "../footer";
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import WorkIcon from '@mui/icons-material/Work';
+import React, { useEffect, useState } from "react";
+import Server from "@src/services/server";
+import { appIcons, appIconsOptions } from "@src/shared/constants/appIcons";
 
 const BasePage = (props) => {
 	const { account, handleLogout, makeHeader } = useBase();
+	const [appList, setAppList] = useState([]);
 
+	useEffect(() => {
+		const fetchData = async () => {
+			const res = await Server.App.getList();
+			console.log('get app list', res);
+			setAppList(res.data);
+		}
+		fetchData();
+
+		}, [])
 	return (
 		<Box
 			sx={{
@@ -54,48 +67,41 @@ const BasePage = (props) => {
 						}}
 					/>}
 				</Link>
-				<a href={`/crm/${account._id}`}>
-				{window.location.pathname.startsWith("/crm") ?
-						<PersonOutlineIcon
-						sx={{
-							mt: 3,
-							backgroundColor: "white",
-							padding: "13px",
-							borderRadius: "50%",
-							color: "black",
-						}}
-					/> : 
-					<PersonIcon
-						sx={{
-							mt: 3,
-							padding: "13px",
-							borderRadius: "50%",
-							color: "white",
-							":hover": { backgroundColor: "black"}
-						}}
-					/>}
-				</a>
-				<a href={`/sales/${account._id}`}>
-				{window.location.pathname.startsWith("/sales") ?
-						<WorkOutlineIcon
-						sx={{
-							mt: 3,
-							backgroundColor: "white",
-							padding: "13px",
-							borderRadius: "50%",
-							color: "black",
-						}}
-					/> : 
-					<WorkIcon
-						sx={{
-							mt: 3,
-							padding: "13px",
-							borderRadius: "50%",
-							color: "white",
-							":hover": { backgroundColor: "black"}
-						}}
-					/>}
-				</a>
+				{console.log("applist", appList)}
+				{appList && appList.map(app => {
+					return <a href={`/${app._id}/${account._id}`}>
+						{!window.location.pathname.startsWith(`/${app._id}`) ?
+								React.cloneElement(appIcons[app.iconType], { sx: { 
+									mt: 3,
+									padding: "13px",
+									borderRadius: "50%",
+									color: "white",
+									":hover": { backgroundColor: "black"}}})
+									: 
+									React.cloneElement(appIconsOptions[app.iconType], { sx: { 
+										mt: 3,
+												backgroundColor: "white",
+												padding: "13px",
+												borderRadius: "50%",
+												color: "black"}})
+
+							// 	<PersonOutlineIcon
+							// 	sx={{
+							// 		mt: 3,
+							// 		backgroundColor: "white",
+							// 		padding: "13px",
+							// 		borderRadius: "50%",
+							// 		color: "black",
+							// 	}}
+							// /> : 
+							// <PersonIcon
+							// 	sx={{
+									
+							// 	}}
+							// />}
+					}
+					</a>
+				})}
 			</Box>
 			<Box sx={{
 				backgroundColor: "#f7f7f7",
@@ -153,13 +159,12 @@ const BasePage = (props) => {
 							</Typography>
 						</Box>
 				</Box>
-				{}
 				<Box
 					sx={{
 						// pt: 3,
 						// pr: 4,
 						// pl: 4,
-						// backgroundColor: "white",
+						backgroundColor: "white",
 						display: "flex",
 						flexDirection: "column",
 						height: "100%"

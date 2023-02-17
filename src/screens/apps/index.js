@@ -28,6 +28,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import useSelectObjectPopup from "./components/selectObjectPopup";
 import DataTableLoader from "./components/loader";
 import TextLoader from "./components/loader/TextLoader";
+import { useEffect, useState } from "react";
+import Server from "@src/services/server";
 
 const Apps = (props) => {
 	const {
@@ -38,6 +40,7 @@ const Apps = (props) => {
 		openEdit,
 		openDelete,
 		app,
+		navigateToSingleRecord,
 		isSelected,
 		handleSelectAllClick,
 		handleSelect,
@@ -54,7 +57,16 @@ const Apps = (props) => {
 	} = useApps();
 
 	const { SelectObjectPopup, handleSelectClick } = useSelectObjectPopup();
+	const [appName, setAppName] = useState("");
 
+	useEffect(() => {
+		const fetchData = async () => {
+			const res = await Server.App.get(params.appName);
+			console.log('get app list', res);
+			setAppName(res.data.name);
+		}
+		fetchData();
+	}, []);
 	// if(!loading)
 	// 	return <DataTableLoader />
 	return (
@@ -75,7 +87,7 @@ const Apps = (props) => {
 					fontSize: 16,
 				}}
 			>
-				{ loading ? <TextLoader width="400px" height="20px" /> : <> Home {"  /  "} {app.object.app === "crm" ? "CRM" : "Sales"} {"  /  "}{app.object.pluralName}</>}
+				{ loading ? <TextLoader width="400px" height="20px" /> : <> Home {"  /  "} {appName} {"  /  "}{app.object.pluralName}</>}
 			</Typography>
 			<Box
 				sx={{
@@ -223,7 +235,8 @@ const Apps = (props) => {
 											padding: 4,
 											":hover": { "#editButton": { display: "flex" }, backgroundColor: "rgba(0, 0, 0, 0.04)" },
 											backgroundColor: isRecordSelected ? "rgba(102, 162, 255, 0.08) !important" : ""
-										}}>
+										}}
+										onClick={() => navigateToSingleRecord(record._id, app.object.pluralName)}>
 											{params.id && (
 												<>
 													<TableCell padding="checkbox" sx={{ pl:1.7 }}>
@@ -237,7 +250,7 @@ const Apps = (props) => {
 															inputProps={{
 																"aria-label": "select all desserts",
 															}}
-															onClick={() => handleSelect(record)}
+															onClick={(e) => {e.stopPropagation(); handleSelect(record);}}
 															checked={isRecordSelected}
 														/>
 													</TableCell>
@@ -283,14 +296,6 @@ const Apps = (props) => {
 											<TableCell>
 												{new Date(record.updateDate).toLocaleDateString("es-ES")}
 											</TableCell>
-											{/* <TableCell>{contact.firstName}</TableCell>
-																			<TableCell>{contact.lastName}</TableCell>
-																			<TableCell>{contact.email}</TableCell>
-																			<TableCell>{contact.phoneNumber}</TableCell>
-																			<TableCell><span style={{padding: 3, backgroundColor: '#f7f7f7', borderRadius: '20px'}}>{new Date(contact.createDate).toLocaleDateString("en-US")} {new Date(contact.createDate).toLocaleTimeString("en-US", {hour: 'numeric', minute: 'numeric'})}</span></TableCell>
-																			<TableCell><span style={{padding: 3, backgroundColor: '#f7f7f7', borderRadius: '20px'}}>{new Date(contact.updateDate).toLocaleDateString("en-US")} {new Date(contact.updateDate).toLocaleTimeString("en-US", {hour: 'numeric', minute: 'numeric'})}</span></TableCell>
-																			<TableCell>{contact.country}</TableCell>
-																			<TableCell>{contact.company}</TableCell> */}
 										</TableRow>
 									);
 								})}

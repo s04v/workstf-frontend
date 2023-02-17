@@ -2,24 +2,51 @@ import { Box, Collapse, Typography } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useSelector } from "react-redux";
 import { useFieldSettings } from "@src/screens/fieldSettings/useFieldSettings";
+import { useAppSettings } from "@src/screens/appSettings/useAppSettings";
+import CreateDrawer from "@src/screens/appSettings/components/createDrawer";
+import { CreateDrawer as CreateObjectDrawer }  from "@src/screens/objectSettings/components/createDrawer";
+import { useObjectsSettings } from "@src/screens/objectSettings/useObjectSettings";
 
 const NestedMenu = () => {
 	const [openObject, setOpenObject] = useState(false);
 	const [openApp, setOpenApp] = useState(false);
 	const location = useLocation();
+	const navigate = useNavigate();
 	const objectList = useSelector((state) => state.settings.objectList);
 	const activeObject = useSelector((state) => state.settings.activeObject);
+	const appList = useSelector((state) => state.settings.app.list);
+	const activeApp = useSelector((state) => state.settings.app.active);
+
 	const { handleChangeObject } = useFieldSettings();
+	const { handleChangeApp, handleOpenDrawer, openCreateDrawer, handleCloseDrawer } = useAppSettings();
+	const objectSettings = useObjectsSettings();
 
 	const handleObjectClick = (obj) => {
 		if(obj)
 			handleChangeObject(obj);
 	}
 
+	const wrapHandleChangeApp = (app) => {
+		const path = window.location.pathname;
+		handleChangeApp(app);
+		if(!path.endsWith('/custom-app')){
+			navigate('/settings/custom-app');
+		}
+	}
+
+	const wrapHandleChangeObject = (obj) => {
+		const path = window.location.pathname;
+		handleChangeObject(obj);
+		if(!path.endsWith('settings')){
+			navigate('/settings');
+		}
+	}
+
+	console.log("objectList", objectList);
 	return (
 		<Box sx={{ 
 			height: "100%",
@@ -29,11 +56,11 @@ const NestedMenu = () => {
 				<Typography sx={{
 					fontSize: 18,
 					fontWeight: 700,
-					py: "13px",
+					py: "17px",
 					px: 2,
 					borderBottom: "1px solid rgba(33, 33, 33, 0.12)"
 				}}>
-					Account Setup
+					Settings
 				</Typography>
 				<Box>
 					<Typography
@@ -45,18 +72,22 @@ const NestedMenu = () => {
 							cursor: "pointer",
 							padding: 1,
 							px: 2,
-							fontWeight: 700,
 							'&:hover': {
 								background: "#F7F7F7",
 						 	}
 						}}
 					>
-						Apps
+						Applications
 						<KeyboardArrowDownIcon />
 					</Typography>
 					<Collapse in={openApp}>
-						<Box
+						{appList.map(app => {
+							return <Box
+							onClick={() => wrapHandleChangeApp(app)}
 							sx={{
+								backgroundColor: window.location.pathname.endsWith('/custom-app') && activeApp?._id === app._id ? "#F7F7F7" : null,
+								color: window.location.pathname.endsWith('/custom-app') && activeApp?._id === app._id  ? "#4787EA" : "black",
+								fontWeight: window.location.pathname.endsWith('/custom-app') && activeApp?._id === app._id ? 700 : null,
 								padding: 1,
 								pl: 5,
 								cursor: "pointer",
@@ -66,9 +97,11 @@ const NestedMenu = () => {
 								}
 							}}
 						>
-							CRM
+							{app.name}
 						</Box>
+						})}
 						<Box
+							onClick={handleOpenDrawer}
 							sx={{
 								padding: 1,
 								pl: 5,
@@ -79,32 +112,10 @@ const NestedMenu = () => {
 								}
 							}}
 						>
-							Sales
-						</Box>
-						<Box
-							sx={{
-								padding: 1,
-								pl: 5,
-								cursor: "pointer",
-								py: 1,
-								'&:hover': {
-									background: "#F7F7F7",
-								}
-							}}
-						>
-							Custom apps
+							Custom applications
 						</Box>
 					</Collapse>
 				</Box>
-				<Typography sx={{
-					fontSize: 18,
-					fontWeight: 700,
-					py: "13px",
-					px: 2,
-					borderBottom: "1px solid rgba(33, 33, 33, 0.12)"
-				}}>
-					Object Manager
-				</Typography>
 				<Typography
 					onClick={() => setOpenObject(!openObject)}
 					sx={{
@@ -114,37 +125,22 @@ const NestedMenu = () => {
 						cursor: "pointer",
 						padding: 1,
 						px: 2,
-						fontWeight: 700,
 						'&:hover': {
 							background: "#F7F7F7",
 						}
 					}}
 				>
-					Objects
+					Objects & Fields
 					<KeyboardArrowDownIcon />
 				</Typography>
 				<Collapse in={openObject}>
-					<Typography
-						onClick={() => handleObjectClick(objectList ? objectList[0] : null)}
-						sx={{
-							padding: 1,
-							pl: 5,
-							cursor: "pointer",
-							py: 1,
-							'&:hover': {
-								background: "#F7F7F7",
-							}
-						}}
-					>
-						Custom Objects
-					</Typography>
 					{objectList && objectList.map((obj) => {
 						return <Typography
-							onClick={() => handleObjectClick(obj)}
+							onClick={() => wrapHandleChangeObject(obj)}
 							sx={{
-								backgroundColor: activeObject?._id === obj._id ? "#F7F7F7" : null,
-								color: activeObject?._id === obj._id  ? "#4787EA" : "black",
-								fontWeight: activeObject?._id === obj._id ? 700 : null,
+								backgroundColor: window.location.pathname.endsWith('settings/') && activeObject?._id === obj._id ? "#F7F7F7" : null,
+								color: window.location.pathname.endsWith('settings') && activeObject?._id === obj._id  ? "#4787EA" : "black",
+								fontWeight: window.location.pathname.endsWith('settings') && activeObject?._id === obj._id ? 700 : null,
 								padding: 1,
 								pl: 5,
 								cursor: "pointer",
@@ -157,10 +153,24 @@ const NestedMenu = () => {
 							{obj.pluralName}
 						</Typography>
 					})}
-					
+					<Typography
+						onClick={objectSettings.handleOpenDrawer}
+						sx={{
+							padding: 1,
+							pl: 5,
+							cursor: "pointer",
+							py: 1,
+							'&:hover': {
+								background: "#F7F7F7",
+							}
+						}}
+					>
+						Custom Objects
+					</Typography>
 				</Collapse>
 			</Box>
-			
+			<CreateDrawer open={openCreateDrawer} onClose={handleCloseDrawer} />
+			<CreateObjectDrawer open={objectSettings.openCreateObject} onClose={objectSettings.handleCloseDrawer} />
 		</Box>
 	);
 };

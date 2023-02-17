@@ -96,7 +96,6 @@ const FieldSettings = () => {
 						mb: 2,
 						display: "flex",
 						flexDirection: "column",
-						borderRadius: "20px",
 						height: "100%",
 					}}
 				>
@@ -107,7 +106,9 @@ const FieldSettings = () => {
 							alignItems: "center",
 							pl: "4px",
 							px: 3,
-							my: 2,
+							py: 2,
+							mb: 3,
+							backgroundColor: "#F7F7F7",
 						}}
 					>
 						<Typography
@@ -205,7 +206,8 @@ const FieldSettings = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody sx={{ position: "relative" }} >
-								{activeObject && activeObject?.schema?.length !== 0 ? (
+								{console.log("fields",fields)}
+								{activeObject?.schema?.length !== 0 ? (
 									fields.visible?.map((field) => {
 										const isFieldSelected = isSelected(field._id);
 										return (

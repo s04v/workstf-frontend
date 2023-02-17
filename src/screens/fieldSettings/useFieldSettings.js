@@ -32,6 +32,7 @@ export const useFieldSettings = () => {
 	const [editInitValues, setEditInitValues] = useState([]);
 
 	useEffect(() => {
+		console.log(fields);
 		async function fetchData() {
 			const res = await Server.Object.getList();
 			if (res.data.length && !activeObject) {
@@ -49,6 +50,7 @@ export const useFieldSettings = () => {
 
 	const updateFields = () => {
 		const newValue = activeObject?.schema?.slice(skip, skip + take);
+		console.log("newValue", activeObject);
 		dispatch(updateVisibleFields(newValue));
 	};
 

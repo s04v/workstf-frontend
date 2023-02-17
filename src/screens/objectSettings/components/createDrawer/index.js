@@ -10,8 +10,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { useCreateDrawer } from "./useCreateDrawer";
 
-const CreateDrawer = ({ open, onClose }) => {
-	const { formik, handleClose } = useCreateDrawer(onClose);
+const CreateDrawer = ({ open, onClose, edit = false }) => {
+	const { formik, handleClose } = useCreateDrawer(onClose, edit);
 
 	return (
 		<Drawer
@@ -46,13 +46,13 @@ const CreateDrawer = ({ open, onClose }) => {
 			>
 				<form onSubmit={formik.handleSubmit} style={{ display: "flex", flexDirection: "column", height: "100%"}}>
 					<Box sx={{width: "100%"}}>
-						<Typography variant="h6" sx={{ backgroundColor: "#F7F7F7", fontWeight: 700, py: 1.5, px: 4 }}>
+						<Typography variant="h6" sx={{ backgroundColor: "#F7F7F7", py: 1.5, px: 4 }}>
 							Choose application
 						</Typography>
 						<Typography sx={{ fontSize: "14px", color: "grey", py: 2, px: 4, mb: 1, borderBottom: "1px solid rgba(33, 33, 33, 0.12);" }}>
-							Associate you object with an app (optional):
+							{ !edit ? "Associate you object with an app (optional):" : "Change objects application:" }
 						</Typography>
-						<Box sx={{ px: 4,}}>
+						<Box sx={{ px: 4 }}>
 							<TextField
 								fullWidth
 								select
@@ -74,12 +74,12 @@ const CreateDrawer = ({ open, onClose }) => {
 							</TextField>
 						</Box>
 					</Box>
-					<Box sx={{ }}>
-							<Typography variant="h6" sx={{ backgroundColor: "#F7F7F7", fontWeight: 700, py: 1.5, px: 4}}>
-								Configure your new custom object{" "}
-							</Typography>
+					<Box>
+						<Typography variant="h6" sx={{ backgroundColor: "#F7F7F7", py: 1.5, px: 4}}>
+							Configure your new custom object{" "}
+						</Typography>
 						<Typography sx={{ fontSize: "14px", px: 4, color: "grey", py: 2,  borderBottom: "1px solid rgba(33, 33, 33, 0.12);" }}>
-							These settings can't be chenged later.
+							Objects name in singular and plural.
 						</Typography>
 						<Box sx={{ width: "100%", py: 3}}>
 							<Box sx={{ px: 4, marginBottom: "25px" }}>
@@ -121,8 +121,8 @@ const CreateDrawer = ({ open, onClose }) => {
 						</Box>
 					</Box>
 					<Box sx={{}}>
-						<Typography variant="h6" sx={{ backgroundColor: "#F7F7F7", fontWeight: 700, py: 1.5, px: 4}}>
-							Create your primary field
+						<Typography variant="h6" sx={{ backgroundColor: "#F7F7F7", py: 1.5, px: 4}}>
+							{ !edit ? "Create your primary field" : "Edit your primary field" }
 						</Typography>
 						<Typography sx={{ fontSize: "14px", px: 4, color: "grey", py: 2,  borderBottom: "1px solid rgba(33, 33, 33, 0.12);" }}>
 							This filed will be the name for each of yours records. Example. Opportunity name.
@@ -188,7 +188,7 @@ const CreateDrawer = ({ open, onClose }) => {
 								fontSize: "16px"
 							}}
 						>
-							<b>Create Object</b>
+							{ !edit ? <b>Create Object</b> : <b>Save</b> }
 						</Button>
 						<Button
 							onClick={handleClose}
@@ -210,4 +210,5 @@ const CreateDrawer = ({ open, onClose }) => {
 	);
 };
 
+export { CreateDrawer };
 export default CreateDrawer;

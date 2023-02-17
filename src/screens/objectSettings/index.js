@@ -10,22 +10,71 @@ import { Link } from "react-router-dom";
 import { useObjectsSettings } from "./useObjectSettings";
 import CreateDrawer from "./components/createDrawer";
 import FolderIcon from '@mui/icons-material/Folder';
-import DataTableLoader from "./components/loader";
+import DeleteObjectModal from "./components/deleteModal";
+import { useState } from "react";
+import Configuration from "./components/configuration";
+import FieldSettings from "../fieldSettings";
 
 const ObjectSettings = () => {
 	const {
-		openCreateObject,
 		objectList,
 		activeObject,
-		handleChangeObject,
 		handleOpenDrawer,
-		handleCloseDrawer,
-		loading,
-		handleDelete
 	} = useObjectsSettings();
+	const [tab, setTab] = useState(0); 
 
 	return (
 		<>
+			<Box sx={{ backgroundColor: "#F7F7F7", px: 3}}>
+			<Typography sx={{ fontWeight: 500, fontSize: 16, my: "19px", display: "flex", gap: 1}}>
+				<Typography sx={{textDecoration: "underline"}}>Home</Typography>
+				{" / "}
+				<Typography sx={{textDecoration: "underline"}}>Settings</Typography>
+				{" / "}
+				<Typography sx={{textDecoration: "underline"}}>Objects</Typography>
+				{" / "}
+				<Typography sx={{textDecoration: "underline"}}>{activeObject?.singularName || "Custom object"}</Typography>
+			</Typography>
+			<Typography sx={{ fontWeight: 700, fontSize: "24px", mb: 2 }}>
+				{activeObject?.singularName || "Custom object"}
+	
+			</Typography>
+			
+				{/* <Typography sx={{ fontWeight: 500, fontSize: 16, my: "19px" }}>
+				Home {"  /  "} Settings {"  /  "} Objects {"  /  "} {activeObject?.singularName || "Custom object"}
+				</Typography>
+				<Typography sx={{ fontWeight: 700, fontSize: "24px", mb: 2 }}> */}
+					{/* {activeObject?.singularName || "Custom object"} */}
+					{/* Custom objects */}
+				{/* </Typography> */}
+			</Box>
+			
+			{activeObject ? <Box sx={{ position: "relative", display: "flex", ml: 3, pt: 3}}>
+					<Box
+						onClick={() => setTab(0)}
+						style={{
+							borderBottom: !tab ? "2px solid #4787EA" : "",
+							padding: "10px",
+							color: !tab ? "#4787EA" : "black",
+							cursor: "pointer"
+						}}
+					>
+						Configuration
+					</Box>
+
+					<Box
+						onClick={() => setTab(1)}
+						style={{
+							borderBottom: tab ? "2px solid #4787EA": "",
+							padding: "10px",
+							color: tab ? "#4787EA" : "black",
+							cursor: "pointer"
+						}}
+					>
+						Fields
+					</Box>
+			</Box> : ""}
+			<Divider sx={{ mt: "0px" }} />
 			{!(Array.isArray(objectList) && objectList.length) ? (
 				<Box
 					sx={{
@@ -78,93 +127,9 @@ const ObjectSettings = () => {
 				</Box>
 			) : (
 				<>
-					<Box
-						sx={{
-							display: "flex",
-							flexDirection: "column",
-							backgroundColor: "white",
-							width: "100%",
-						}}
-					>
-						<Box
-							sx={{
-								py: 2,
-								display: "flex",
-								flexDirection: "column",
-							}}
-						>
-							<Box
-								sx={{
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "space-between",
-									px: 3
-								}}
-							>
-								<Box sx={{ display: "flex", gap: 3, alignItems: "center" }}>
-									<TextField
-										select
-										sx={{ my: 2, width: "400px" }}
-										autoComplete="off"
-										name="selectedObject"
-										value={activeObject && activeObject.singularName}
-										label="Select a custom object"
-										// onChange={(e) => setSelectedObject(e.target.value)}
-										// error={formik.touched.country && Boolean(formik.errors.country)}
-										// helperText={formik.touched.country && formik.errors.country}
-									>
-										{objectList.map((object) => (
-											<MenuItem
-												value={object.singularName}
-												onClick={() => handleChangeObject(object)}
-											>
-												{object.singularName}
-											</MenuItem>
-										))}
-									</TextField>
-								</Box>
-								<Button
-									onClick={handleOpenDrawer}
-									variant="contained"
-									sx={{
-										padding: "10px 20px",
-										borderRadius: 1,
-										display: "flex",
-										gap: 1,
-										justifyContent: "center"
-									}}
-								>
-									<FolderIcon />
-									<Typography sx={{}}>Create Custom Object</Typography>
-								</Button>
-							</Box>
-						</Box>
-						<Divider />
-						<Box sx={{ backgroundColor: "#F7F7F7", py: 2}}>
-							<Typography sx={{
-								fontSize: 20,
-								mx: 3,
-								my: 1
-							}}>
-								Setup
-							</Typography>
-						</Box>
-						<Box sx={{ px: 3, py: 2 }}>
-							<Typography sx={{ mb: "10px" }}>
-								<Typography sx={{ fontWeight: 600, textDecotration: "underline", color: "#212121", cursor: "pointer" }} onClick={handleDelete}>
-									Delete custom object
-								</Typography>
-							</Typography>
-							<Typography sx={{ fontSize: "14px", color: "#828282" }}>
-							This is change is irreversible.
-							</Typography>
-						</Box>
-						<Divider />
-					</Box>
+				{!tab ? <Configuration /> : <FieldSettings />}
 				</>
 			)}
-			{/*  */}
-			<CreateDrawer open={openCreateObject} onClose={handleCloseDrawer} />
 		</>
 	);
 };
