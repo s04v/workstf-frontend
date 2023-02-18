@@ -6,6 +6,7 @@ import Server from "@src/services/server";
 import { updateObjectList } from "@src/store/settingsSlice";
 import { useState } from "react";
 import { settingsStore } from '@src/store/settingsSlice';
+import { updateAccountAppList } from "@src/store/accountSlice";
 
 const validationSchema = yup.object({
 	name: yup.string("Enter application name").required("Application name is required"),
@@ -39,8 +40,15 @@ export const useCreateDrawer = (onClose, edit) => {
 			} else {
 				setAlert("Success", "success");
 				const res = await Server.App.getList();
+				const newActiveApp = res.data.find(a => a.name === values.name);
 				dispatch(settingsStore.updateAppList(res.data));
-				dispatch(settingsStore.updateActiveApp(res.data[0]));
+				dispatch(settingsStore.updateActiveApp(newActiveApp));
+
+				Server.App.getList().then(res => {
+					console.log('update icons');
+					dispatch(updateAccountAppList(res.data));
+				});
+
         formik.handleReset();
 				onClose();
 			}

@@ -5,6 +5,7 @@ const initialState = {
 	firstName: "",
 	lastName: "",
 	email: "",
+	appList: [],
 };
 
 const accountSlice = createSlice({
@@ -12,10 +13,13 @@ const accountSlice = createSlice({
 	initialState,
 	reducers: {
 		updateAccount: (state, action) => {
-			return action.payload;
+			return {...action.payload, appList: state.appList};
+		},
+		updateAccountAppList: (state, action) => {
+			state.appList = action.payload;
 		},
 	},
 });
 
-export const { updateAccount } = accountSlice.actions;
+export const { updateAccount, updateAccountAppList } = accountSlice.actions;
 export default accountSlice.reducer;

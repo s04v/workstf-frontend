@@ -11,17 +11,26 @@ import { useObjectsSettings } from "./useObjectSettings";
 import CreateDrawer from "./components/createDrawer";
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteObjectModal from "./components/deleteModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Configuration from "./components/configuration";
 import FieldSettings from "../fieldSettings";
+import { useDispatch, useSelector } from "react-redux";
+import { updateSetingsTab } from "@src/store/settingsSlice";
 
 const ObjectSettings = () => {
 	const {
 		objectList,
+		openCreateObject,
+		handleCloseDrawer,
 		activeObject,
 		handleOpenDrawer,
 	} = useObjectsSettings();
-	const [tab, setTab] = useState(0); 
+	const dispatch = useDispatch();
+	const tab = useSelector(state => state.settings.tab);
+
+	useEffect(() => {
+		console.log("TAB",tab);
+	}, [])
 
 	return (
 		<>
@@ -51,7 +60,7 @@ const ObjectSettings = () => {
 			
 			{activeObject ? <Box sx={{ position: "relative", display: "flex", ml: 3, pt: 3}}>
 					<Box
-						onClick={() => setTab(0)}
+						onClick={() => dispatch(updateSetingsTab(0))}
 						style={{
 							borderBottom: !tab ? "2px solid #4787EA" : "",
 							padding: "10px",
@@ -63,7 +72,7 @@ const ObjectSettings = () => {
 					</Box>
 
 					<Box
-						onClick={() => setTab(1)}
+						onClick={() => dispatch(updateSetingsTab(1))}
 						style={{
 							borderBottom: tab ? "2px solid #4787EA": "",
 							padding: "10px",
@@ -75,7 +84,8 @@ const ObjectSettings = () => {
 					</Box>
 			</Box> : ""}
 			<Divider sx={{ mt: "0px" }} />
-			{!(Array.isArray(objectList) && objectList.length) ? (
+			{/* {!(Array.isArray(objectList) && objectList.length) ? ( */}
+			{!activeObject ? (
 				<Box
 					sx={{
 						padding: "30px",
@@ -130,6 +140,7 @@ const ObjectSettings = () => {
 				{!tab ? <Configuration /> : <FieldSettings />}
 				</>
 			)}
+			<CreateDrawer open={openCreateObject} onClose={handleCloseDrawer} />
 		</>
 	);
 };

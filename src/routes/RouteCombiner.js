@@ -1,3 +1,4 @@
+import BasePage from "@src/layouts/base";
 import AuthProvider from "@src/providers/auth";
 import { Route, Routes } from "react-router-dom";
 
@@ -9,8 +10,10 @@ export const RouteCombiner = ({ routes }) => {
 			Layout = ({ children }) => <>{children}</>,
 			Component,
 			path,
+			nested,
 		}) => {
 			const ComponentWithLayout = () => {
+				const Element = nested ? <RouteCombiner routes={nested} /> : <Component />;
 				return !auth ? (
 					<Layout>
 						<Component />
@@ -18,7 +21,7 @@ export const RouteCombiner = ({ routes }) => {
 				) : (
 					<AuthProvider>
 						<Layout>
-							<Component />
+							{Element}
 						</Layout>
 					</AuthProvider>
 				);

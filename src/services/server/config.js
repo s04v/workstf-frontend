@@ -2,8 +2,8 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 
 const Http = axios.create({
-	baseURL: "https://akxpzzbmsi.eu-west-1.awsapprunner.com",
-	// baseURL: "http://localhost:3001/",
+	// baseURL: "https://akxpzzbmsi.eu-west-1.awsapprunner.com",
+	baseURL: "http://localhost:3001/",
 	timeout: 5000,
 });
 

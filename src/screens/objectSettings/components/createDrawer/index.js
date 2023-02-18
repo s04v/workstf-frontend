@@ -1,17 +1,20 @@
 import {
 	Box,
 	Button,
+	Checkbox,
 	Divider,
 	Drawer,
+	FormControlLabel,
 	MenuItem,
 	TextField,
 	Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useCreateDrawer } from "./useCreateDrawer";
+import { StarPurple500 } from "@mui/icons-material";
 
 const CreateDrawer = ({ open, onClose, edit = false }) => {
-	const { formik, handleClose } = useCreateDrawer(onClose, edit);
+	const { formik, appList, selectedApp, checkApp, makeLabel, handleSelectApp, handleClose } = useCreateDrawer(onClose, edit);
 
 	return (
 		<Drawer
@@ -53,25 +56,77 @@ const CreateDrawer = ({ open, onClose, edit = false }) => {
 							{ !edit ? "Associate you object with an app (optional):" : "Change objects application:" }
 						</Typography>
 						<Box sx={{ px: 4 }}>
-							<TextField
+							{ !edit ?<TextField
 								fullWidth
 								select
 								sx={{ my: 3, fontSize: "16px" }}
 								autoComplete="off"
 								name="app"
 								label="Select an application"
-								value={formik.values.app}	
+								value={selectedApp ? selectedApp.name : ""}	
 								onChange={formik.handleChange}
 								error={formik.touched.app && Boolean(formik.errors.app)}
 								helperText={formik.touched.app && formik.errors.app}
 							>
-								<MenuItem value="sales" sx={{ fontSize: "14px" }}>
-									Sales
-								</MenuItem>
-								<MenuItem value="crm" sx={{ fontSize: "14px" }}>
-									CRM
-								</MenuItem>
-							</TextField>
+								{appList.map(app => {
+									return <MenuItem value={app.name} sx={{ fontSize: "14px" }} onClick={() => handleSelectApp(app)}>
+										{app.name}
+									</MenuItem>
+								})}
+							</TextField> 
+							:
+							<TextField
+								InputLabelProps={{ shrink: true }}
+								fullWidth
+								select
+								autoComplete="off"
+								sx={{ my: 3, fontSize: "16px" }}
+								name="app"
+								label={"Change objects application:"}
+								value={10}
+								// value={formik.values.type}
+								// onChange={formik.handleChange}
+								// error={formik.touched.type && Boolean(formik.errors.type)}
+								// helperText={formik.touched.type && formik.errors.type}
+								>
+									<MenuItem value={10} sx={{ display: "none" }}>
+										{makeLabel()}
+									</MenuItem>
+									<Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+									{Array.isArray(formik.values.app) && appList.map((app, i) => {
+										const checked = formik.values.app.find(o => o._id === app._id) ? true : false;
+
+										const val = {name: app.name, _id: app._id};
+										return (
+											<FormControlLabel
+												sx={{
+													px: 4,
+													borderBottom: "1px solid #c6c6c6",
+													// width: "100%",
+												}}
+												control={
+													<Checkbox
+														sx={{
+															color: "black",
+															"&.Mui-checked": {
+																color: '#4787EA'
+															}
+														}}
+														value={val}
+														variant="outlined"
+														name={`app[${i}]`}
+														checked={checked}
+														onChange={() => checkApp(checked, val)}
+													/>
+												}
+												label={app.name}
+											/>
+										);
+										})
+									}
+									</Box>
+								</TextField>
+							}
 						</Box>
 					</Box>
 					<Box>
@@ -120,7 +175,7 @@ const CreateDrawer = ({ open, onClose, edit = false }) => {
 							</Box>
 						</Box>
 					</Box>
-					<Box sx={{}}>
+					<Box>
 						<Typography variant="h6" sx={{ backgroundColor: "#F7F7F7", py: 1.5, px: 4}}>
 							{ !edit ? "Create your primary field" : "Edit your primary field" }
 						</Typography>

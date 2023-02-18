@@ -41,9 +41,9 @@ export const useAppSettings = () => {
 
 			const res = await Server.App.getList();
 			console.log('gel app list', res);
-			if (res.data.length && !activeApp) {
-				dispatch(settingsStore.updateActiveApp(res.data[0]));
-			}
+			// if (res.data.length && !activeApp) {
+			// 	dispatch(settingsStore.updateActiveApp(res.data[0]));
+			// }
 
 			dispatch(settingsStore.updateAppList(res.data));
       setLoading(false);
@@ -51,7 +51,6 @@ export const useAppSettings = () => {
 		fetchData();
     console.log("render");
 	}, []);
-
 
 	return {
 		activeApp,

@@ -22,7 +22,7 @@ const Configuration = () => {
 
   return (
     <>
-    {!activeObject.isDefault ? <>
+    { !activeObject.isDefault ? <>
       <Box
       sx={{
         display: "flex",

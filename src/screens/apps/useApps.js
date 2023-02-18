@@ -112,7 +112,8 @@ export const useApps = (onClose) => {
 		const objectPromise = fetchObject();
 
 		Promise.all([dataPromise, recordsPromise, objectPromise]).then((value) => {
-			setLoading(false);
+			if(app.objectList.length > 0)
+				setLoading(false);
 		})
 
 		return () => {

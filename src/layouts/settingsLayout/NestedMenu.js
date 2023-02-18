@@ -82,7 +82,7 @@ const NestedMenu = () => {
 					</Typography>
 					<Collapse in={openApp}>
 						{appList.map(app => {
-							return <Box
+							return !app.isDefault ? <Box
 							onClick={() => wrapHandleChangeApp(app)}
 							sx={{
 								backgroundColor: window.location.pathname.endsWith('/custom-app') && activeApp?._id === app._id ? "#F7F7F7" : null,
@@ -98,10 +98,10 @@ const NestedMenu = () => {
 							}}
 						>
 							{app.name}
-						</Box>
+						</Box> : null;
 						})}
 						<Box
-							onClick={handleOpenDrawer}
+							onClick={() => wrapHandleChangeApp(null)}
 							sx={{
 								padding: 1,
 								pl: 5,
@@ -135,10 +135,10 @@ const NestedMenu = () => {
 				</Typography>
 				<Collapse in={openObject}>
 					{objectList && objectList.map((obj) => {
-						return <Typography
+						return !obj.isDefault ? <Typography
 							onClick={() => wrapHandleChangeObject(obj)}
 							sx={{
-								backgroundColor: window.location.pathname.endsWith('settings/') && activeObject?._id === obj._id ? "#F7F7F7" : null,
+								backgroundColor: window.location.pathname.endsWith('settings') && activeObject?._id === obj._id ? "#F7F7F7" : null,
 								color: window.location.pathname.endsWith('settings') && activeObject?._id === obj._id  ? "#4787EA" : "black",
 								fontWeight: window.location.pathname.endsWith('settings') && activeObject?._id === obj._id ? 700 : null,
 								padding: 1,
@@ -151,11 +151,14 @@ const NestedMenu = () => {
 							}}
 						>
 							{obj.pluralName}
-						</Typography>
+						</Typography> : null;
 					})}
 					<Typography
-						onClick={objectSettings.handleOpenDrawer}
+						onClick={() => wrapHandleChangeObject(null)}
 						sx={{
+							backgroundColor: window.location.pathname.endsWith('settings') &&  !activeObject ? "#F7F7F7" : null,
+							color: window.location.pathname.endsWith('settings') && !activeObject ? "#4787EA" : "black",
+							fontWeight: window.location.pathname.endsWith('settings') && !activeObject ? 700 : null,
 							padding: 1,
 							pl: 5,
 							cursor: "pointer",
@@ -169,8 +172,6 @@ const NestedMenu = () => {
 					</Typography>
 				</Collapse>
 			</Box>
-			<CreateDrawer open={openCreateDrawer} onClose={handleCloseDrawer} />
-			<CreateObjectDrawer open={objectSettings.openCreateObject} onClose={objectSettings.handleCloseDrawer} />
 		</Box>
 	);
 };

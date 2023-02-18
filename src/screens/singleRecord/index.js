@@ -9,6 +9,7 @@ const SingleRecord = () => {
   const {
     loading,
     records,
+    primaryField,
     objectName,
     navigateBack
   } = useSingleRecord();
@@ -27,7 +28,7 @@ const SingleRecord = () => {
               <Paper sx={{ display: "flex", alignItems: "center", gap: 2, padding: 2 }} >
                 <PersonIcon sx={{padding: 1.5, borderRadius: "50%", color: "white", backgroundColor: "#E5E5E5" }} />
                 <Typography sx={{ fontSize: 20}}>
-                  John Doe
+                  {primaryField}
                 </Typography>
               </Paper>
             <Paper sx={{ height: "100%" }}>

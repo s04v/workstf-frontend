@@ -35,10 +35,10 @@ export const useFieldSettings = () => {
 		console.log(fields);
 		async function fetchData() {
 			const res = await Server.Object.getList();
-			if (res.data.length && !activeObject) {
-				dispatch(updateObjectList(res.data));
-				dispatch(updateActiveObject(res.data[0]));
-			}
+			// if (res.data.length && !activeObject) {
+			// 	dispatch(updateObjectList(res.data));
+			// 	dispatch(updateActiveObject(res.data[0]));
+			// }
 			dispatch(updateObjectList(res.data));
 		}
 		fetchData();

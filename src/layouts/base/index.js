@@ -14,21 +14,27 @@ import WorkIcon from '@mui/icons-material/Work';
 import React, { useEffect, useState } from "react";
 import Server from "@src/services/server";
 import { appIcons, appIconsOptions } from "@src/shared/constants/appIcons";
+import { useDispatch, useSelector } from "react-redux";
+import { updateAccountAppList } from "@src/store/accountSlice";
 
 const BasePage = (props) => {
+	const dispatch = useDispatch();
 	const { account, handleLogout, makeHeader } = useBase();
-	const [appList, setAppList] = useState([]);
-
+	// const [appList, setAppList] = useState([]);
+	const appList = useSelector(state => state.account.appList);
 	useEffect(() => {
 		const fetchData = async () => {
 			const res = await Server.App.getList();
 			console.log('get app list', res);
-			setAppList(res.data);
+			// setAppList(res.data);
+			dispatch(updateAccountAppList(res.data));
 		}
 		fetchData();
 
 		}, [])
-	return (
+
+		console.log(props);
+		return (
 		<Box
 			sx={{
 				display: "flex",

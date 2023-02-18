@@ -18,6 +18,9 @@ const App = {
   update: async (id, data) => {
 		return await resolve(Http.patch(`/custom-app/${id}`, data).then((res) => res.data));
 	},
+	getAccociations: async (id) => {
+		return await resolve(Http.get(`/custom-app/association/${id}`).then((res) => res.data));
+	},
   createAssociation: async (id, object) => {
 		return await resolve(Http.post(`/custom-app/${id}/association`, { object }).then((res) => res.data));
 	},

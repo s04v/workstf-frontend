@@ -9,8 +9,74 @@ import Signin from "@src/screens/signin";
 import Signup from "@src/screens/signup";
 import AppSettings from "@src/screens/appSettings";
 import SingleRecord from "@src/screens/singleRecord";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 
 const routes = [
+	
+	{
+		path: "/*",
+		auth: true,
+		Component: () => <div></div>,
+		Layout: BasePage,
+		nested: [ {
+			path: "2",
+			Component: () => <div>nested <Outlet /> </div>,
+			Layout: ({ children }) => (
+				<SettingsLayout>{children}</SettingsLayout>)
+			},
+			{
+				path: "home",
+				auth: true,
+				exact: true,
+				Component: Home,
+			},
+			{
+				path: "/:appName/:userId",
+				auth: true,
+				exact: true,
+				Component: Apps,
+			},
+			{
+				path: "/:appName/:userId/:id",
+				auth: true,
+				exact: true,
+				Component: Apps,
+			},
+			{
+				path: "/:appName/:userId/:objectId/:recordId",
+				auth: true,
+				exact: true,
+				Component: SingleRecord,
+			},
+			{
+				path: "/settings/*",
+				auth: true,
+				// Component: Settings,
+				Layout: ({ children }) => (
+					<SettingsLayout>{children}</SettingsLayout>
+				),
+				nested: [
+					{
+						path: "/",
+						auth: true,
+						Component: Settings,
+						
+					},
+					// {
+					// 	path: "/fields",
+					// 	auth: true,
+					// 	Component: FieldSettings,
+					// },
+					{
+						path: "/custom-app",
+						auth: true,
+						exact: true,
+						Component: AppSettings,
+					},
+				]
+			},
+		]
+	},
 	{
 		path: "/signin",
 		exact: true,
@@ -21,67 +87,7 @@ const routes = [
 		exact: true,
 		Component: Signup,
 	},
-	{
-		path: "/home",
-		auth: true,
-		exact: true,
-		Component: Home,
-		Layout: BasePage,
-	},
-	{
-		path: "/:appName/:userId",
-		auth: true,
-		exact: true,
-		Component: Apps,
-		Layout: BasePage,
-	},
-	{
-		path: "/:appName/:userId/:id",
-		auth: true,
-		exact: true,
-		Component: Apps,
-		Layout: BasePage,
-	},
-	{
-		path: "/:appName/:userId/:objectId/:recordId",
-		auth: true,
-		exact: true,
-		Component: SingleRecord,
-		Layout: BasePage,
-	},
-	{
-		path: "/settings/custom-app",
-		auth: true,
-		exact: true,
-		Component: AppSettings,
-		Layout: ({ children }) => (
-			<BasePage>
-				<SettingsLayout>{children}</SettingsLayout>
-			</BasePage>
-		),
-	},
-	{
-		path: "/settings",
-		auth: true,
-		exact: true,
-		Component: Settings,
-		Layout: ({ children }) => (
-			<BasePage>
-				<SettingsLayout>{children}</SettingsLayout>
-			</BasePage>
-		),
-	},
-	// {
-	// 	path: "/settings/:id",
-	// 	auth: true,
-	// 	exact: true,
-	// 	Component: FieldSettings,
-	// 	Layout: ({ children }) => (
-	// 		<BasePage>
-	// 			<SettingsLayout>{children}</SettingsLayout>
-	// 		</BasePage>
-	// 	),
-	// },
+	
 ];
 
 export default routes;

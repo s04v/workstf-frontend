@@ -13,7 +13,8 @@ const initialState = {
 		active: null,
 		list: [],
 		associations: [],
-	}
+	},
+	tab: 0,
 };
 
 const settingsSlice = createSlice({
@@ -44,6 +45,9 @@ const settingsSlice = createSlice({
 		updateAppAssociations: (state, action) => {
 			state.app.associations = action.payload;
 		},
+		updateSetingsTab: (state, action) => {
+			state.tab = action.payload;
+		},
 	},
 });
 
@@ -60,7 +64,8 @@ export const {
 
 	updateActiveApp,
 	updateAppList,
-	updateAppAssociations
+	updateAppAssociations,
+	updateSetingsTab
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

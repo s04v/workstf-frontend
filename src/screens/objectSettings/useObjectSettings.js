@@ -21,15 +21,16 @@ export const useObjectsSettings = () => {
 	useEffect(() => {
 		async function fetchData() {
 			const res = await Server.Object.getList();
-			if (res.data.length && !activeObject) {
-				dispatch(updateActiveObject(res.data[0]));
-			}
+			// if (res.data.length && !activeObject) {
+			// 	dispatch(updateActiveObject(res.data[0]));
+			// }
 
 			dispatch(updateObjectList(res.data));
 		}
 		fetchData().then(() => {
 			setLoading(false);
 		})
+		console.log("RELOAD");
 	}, []);
 
 	const handleChangeObject = (object) => {

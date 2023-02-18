@@ -44,7 +44,8 @@ const AppSettings = () => {
 		</Box>
 
 			
-			{ !(Array.isArray(appList) && appList.length) ? (
+			{/* { !(Array.isArray(appList) && appList.length) ? ( */}
+			{ !activeApp ? (
 				<>
 				<Divider sx={{ mt: "0px" }} />
 				<Box
@@ -119,9 +120,10 @@ const AppSettings = () => {
 						</Box>
 				</Box>
 				{ !tab ? <Configuration /> : <Associations /> }
-				<CreateDrawer open={openCreateDrawer} onClose={handleCloseDrawer} />
 				</>
 			)}
+			<CreateDrawer open={openCreateDrawer} onClose={handleCloseDrawer} />
+
 		</>
 		}
 		</>
