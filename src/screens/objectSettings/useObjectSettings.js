@@ -21,9 +21,10 @@ export const useObjectsSettings = () => {
 	useEffect(() => {
 		async function fetchData() {
 			const res = await Server.Object.getList();
-			// if (res.data.length && !activeObject) {
-			// 	dispatch(updateActiveObject(res.data[0]));
-			// }
+			if (res.data.length && !activeObject) {
+				const customObject = res.data.find(o => !o.isDefault);
+				dispatch(updateActiveObject(customObject));
+			}
 
 			dispatch(updateObjectList(res.data));
 		}

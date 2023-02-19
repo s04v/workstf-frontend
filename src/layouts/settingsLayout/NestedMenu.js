@@ -32,7 +32,15 @@ const NestedMenu = () => {
 
 	const wrapHandleChangeApp = (app) => {
 		const path = window.location.pathname;
-		handleChangeApp(app);
+
+		if(!app) {
+			const customApps = appList.find(o => !o.isDefault) || [];
+			const newApp = customApps || null;
+			handleChangeApp(newApp);
+		} else {
+			handleChangeApp(app);
+		}
+
 		if(!path.endsWith('/custom-app')){
 			navigate('/settings/custom-app');
 		}
@@ -40,7 +48,14 @@ const NestedMenu = () => {
 
 	const wrapHandleChangeObject = (obj) => {
 		const path = window.location.pathname;
-		handleChangeObject(obj);
+		if(!obj) {
+			const customObjects = objectList.find(o => !o.isDefault) || [];
+			console.log(customObjects);
+			const newObj = customObjects || null;
+			handleChangeObject(newObj);
+		} else {
+			handleChangeObject(obj);
+		}
 		if(!path.endsWith('settings')){
 			navigate('/settings');
 		}
@@ -82,7 +97,7 @@ const NestedMenu = () => {
 					</Typography>
 					<Collapse in={openApp}>
 						{appList.map(app => {
-							return !app.isDefault ? <Box
+							return app.isDefault ? <Box
 							onClick={() => wrapHandleChangeApp(app)}
 							sx={{
 								backgroundColor: window.location.pathname.endsWith('/custom-app') && activeApp?._id === app._id ? "#F7F7F7" : null,
@@ -103,6 +118,9 @@ const NestedMenu = () => {
 						<Box
 							onClick={() => wrapHandleChangeApp(null)}
 							sx={{
+								backgroundColor: window.location.pathname.endsWith('/custom-app') && !activeApp?.isDefault ? "#F7F7F7" : null,
+								color: window.location.pathname.endsWith('/custom-app') && !activeApp?.isDefault  ? "#4787EA" : "black",
+								fontWeight: window.location.pathname.endsWith('/custom-app') && !activeApp?.isDefault ? 700 : null,
 								padding: 1,
 								pl: 5,
 								cursor: "pointer",
@@ -135,7 +153,7 @@ const NestedMenu = () => {
 				</Typography>
 				<Collapse in={openObject}>
 					{objectList && objectList.map((obj) => {
-						return !obj.isDefault ? <Typography
+						return obj.isDefault ? <Typography
 							onClick={() => wrapHandleChangeObject(obj)}
 							sx={{
 								backgroundColor: window.location.pathname.endsWith('settings') && activeObject?._id === obj._id ? "#F7F7F7" : null,
@@ -156,9 +174,9 @@ const NestedMenu = () => {
 					<Typography
 						onClick={() => wrapHandleChangeObject(null)}
 						sx={{
-							backgroundColor: window.location.pathname.endsWith('settings') &&  !activeObject ? "#F7F7F7" : null,
-							color: window.location.pathname.endsWith('settings') && !activeObject ? "#4787EA" : "black",
-							fontWeight: window.location.pathname.endsWith('settings') && !activeObject ? 700 : null,
+							backgroundColor: window.location.pathname.endsWith('settings') &&  !activeObject?.isDefault ? "#F7F7F7" : null,
+							color: window.location.pathname.endsWith('settings') && !activeObject?.isDefault ? "#4787EA" : "black",
+							fontWeight: window.location.pathname.endsWith('settings') && !activeObject?.isDefault ? 700 : null,
 							padding: 1,
 							pl: 5,
 							cursor: "pointer",

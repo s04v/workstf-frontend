@@ -9,9 +9,9 @@ const blink = keyframes`
 `;
 
 const Home = () => {
-  const [time, setTime] = useState(new Date().toLocaleTimeString().split(':'));
+  const [time, setTime] = useState(new Date().toLocaleTimeString('en-GB', { hour12: true }).split(':'));
   const refreshTime = () => {
-    setTime(new Date().toLocaleTimeString().split(':'));
+    setTime(new Date().toLocaleTimeString('en-GB', { hour12: true }).split(':'));
   }
 
   useEffect(() => {
