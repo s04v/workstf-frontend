@@ -32,6 +32,7 @@ const SettingsLayout = (props) => {
 				display: "flex",
 				height: "100%",
 				position: "relative",
+				backgroundColor: "white",
 			}}
 		>
 			<Box sx={{ width: "270px", borderRight: "1px solid rgba(33, 33, 33, 0.12)" }}>

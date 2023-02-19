@@ -39,6 +39,7 @@ const BasePage = (props) => {
 			sx={{
 				display: "flex",
 				minHeight: "100vh",
+				backgroundColor: "#F7F7F7"
 			}}
 		>
 			<Box
@@ -170,7 +171,7 @@ const BasePage = (props) => {
 						// pt: 3,
 						// pr: 4,
 						// pl: 4,
-						backgroundColor: "white",
+						// backgroundColor: "white",
 						display: "flex",
 						flexDirection: "column",
 						height: "100%"

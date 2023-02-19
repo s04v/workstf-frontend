@@ -34,7 +34,7 @@ const NestedMenu = () => {
 		const path = window.location.pathname;
 
 		if(!app) {
-			const customApps = appList.find(o => !o.isDefault) || [];
+			const customApps = appList.find(o => !o.isDefault) || null;
 			const newApp = customApps || null;
 			handleChangeApp(newApp);
 		} else {
@@ -49,8 +49,7 @@ const NestedMenu = () => {
 	const wrapHandleChangeObject = (obj) => {
 		const path = window.location.pathname;
 		if(!obj) {
-			const customObjects = objectList.find(o => !o.isDefault) || [];
-			console.log(customObjects);
+			const customObjects = objectList.find(o => !o.isDefault) || null;
 			const newObj = customObjects || null;
 			handleChangeObject(newObj);
 		} else {

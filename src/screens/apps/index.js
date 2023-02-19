@@ -81,13 +81,22 @@ const Apps = (props) => {
 				position: "relative",
 			}}
 		>
-			<Typography
+			{/* <Typography
 				sx={{
 					my: 2,
 					fontSize: 16,
 				}}
 			>
 				{ loading ? <TextLoader width="400px" height="20px" /> : <> Home {"  /  "} {appName} {"  /  "}{app.object.pluralName}</>}
+			</Typography> */}
+			<Typography sx={{ fontWeight: 500, fontSize: 16, my: "19px", display: "flex", gap: 1}}>
+				<Typography sx={{textDecoration: "underline"}}>Home</Typography>
+				{" / "}
+				<Typography sx={{textDecoration: "underline"}}>Settings</Typography>
+				{" / "}
+				<Typography sx={{textDecoration: "underline"}}>{appName}</Typography>
+				{" / "}
+				<Typography sx={{textDecoration: "underline"}}>{app?.object?.pluralName || ""}</Typography>
 			</Typography>
 			<Box
 				sx={{
@@ -223,7 +232,7 @@ const Apps = (props) => {
 										<TableCell>{field.name}</TableCell>
 									))}
 									<TableCell>Create Date</TableCell>
-									<TableCell>Mofilied Date</TableCell>
+									<TableCell>Modified Date</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody sx={{ position: "relative" }}>
