@@ -34,12 +34,18 @@ const AppSettings = () => {
 				<Typography sx={{textDecoration: "underline"}}>Settings</Typography>
 				{" / "}
 				<Typography sx={{textDecoration: "underline"}}>Applications</Typography>
-				{" / "}
-				<Typography sx={{textDecoration: "underline"}}>{activeApp?.name || "Custom Applications"}</Typography>
+			
+				{!activeApp || !activeApp?.isDefault ? 
+					<>
+						{" / "}
+						<Typography sx={{textDecoration: "underline"}}>Custom Applications</Typography> 
+					</> : ""
+				}
+				{activeApp ? <>{" / "} <Typography sx={{textDecoration: "underline"}}>{activeApp.name}</Typography></> : ""}
+
 			</Typography>
 			<Typography sx={{ fontWeight: 700, fontSize: "24px", mb: 2 }}>
-				{activeApp?.name || "Custom Applications"}
-				
+				{activeApp && activeApp.name}
 			</Typography>
 		</Box>
 

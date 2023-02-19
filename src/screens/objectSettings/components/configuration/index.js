@@ -58,14 +58,15 @@ const Configuration = () => {
               // error={formik.touched.country && Boolean(formik.errors.country)}
               // helperText={formik.touched.country && formik.errors.country}
             >
-              {objectList.map((object) => (
+              {objectList.filter(obj => !obj.isDefault).map((object) => (
+
                 <MenuItem
                   value={object.singularName}
                   onClick={() => handleChangeObject(object)}
                 >
                   {object.singularName}
                 </MenuItem>
-              ))}
+            ))}
             </TextField>
           </Box>
           <Button

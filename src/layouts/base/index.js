@@ -171,7 +171,7 @@ const BasePage = (props) => {
 						// pt: 3,
 						// pr: 4,
 						// pl: 4,
-						// backgroundColor: "white",
+						backgroundColor: "white",
 						display: "flex",
 						flexDirection: "column",
 						height: "100%"

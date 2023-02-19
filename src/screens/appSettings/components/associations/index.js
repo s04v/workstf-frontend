@@ -66,7 +66,7 @@ const Associations = () => {
 								// error={formik.touched.country && Boolean(formik.errors.country)}
 								// helperText={formik.touched.country && formik.errors.country}
 							>
-								{appList.map((app) => (
+								{appList.filter(obj => !obj.isDefault).map((app) => (
 									<MenuItem
 										value={app.name}
 										onClick={() => handleChangeApp(app)}

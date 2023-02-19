@@ -67,7 +67,7 @@ const FieldSettings = () => {
 					px: 3
 				}}
 			>
-				<Box sx={{ display: "flex", gap: 3, alignItems: "center" }}>
+				{!activeObject.isDefault ? <Box sx={{ display: "flex", gap: 3, alignItems: "center" }}>
 					<TextField
 						select
 						sx={{ my: 4, width: "400px" }}
@@ -76,7 +76,7 @@ const FieldSettings = () => {
 						label="Select a custom object"
 						value={activeObject && activeObject.singularName}
 					>
-						{objectList.map((object) => {
+						{objectList.filter(obj => !obj.isDefault).map((object) => {
 							return (
 								<MenuItem
 									value={object.singularName}
@@ -87,7 +87,7 @@ const FieldSettings = () => {
 							);
 						})}
 					</TextField>
-				</Box>
+				</Box> : ""}
 			</Box>
 			<Divider />
 			<Box sx={{ height: "100%" }}>

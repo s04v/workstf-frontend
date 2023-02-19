@@ -41,13 +41,19 @@ const ObjectSettings = () => {
 				<Typography sx={{textDecoration: "underline"}}>Settings</Typography>
 				{" / "}
 				<Typography sx={{textDecoration: "underline"}}>Objects</Typography>
-				{" / "}
-				<Typography sx={{textDecoration: "underline"}}>{activeObject?.singularName || "Custom object"}</Typography>
+				
+				{!activeObject || !activeObject?.isDefault ? 
+					<>
+						{" / "}
+						<Typography sx={{textDecoration: "underline"}}>Custom objects</Typography> 
+					</> : ""
+				}
+				{activeObject ? <>{" / "} <Typography sx={{textDecoration: "underline"}}>{activeObject.pluralName}</Typography></> : ""}
+				
 			</Typography>
-			<Typography sx={{ fontWeight: 700, fontSize: "24px", mb: 2 }}>
-				{activeObject?.singularName || "Custom object"}
-	
-			</Typography>
+				<Typography sx={{ fontWeight: 700, fontSize: "24px", mb: 2 }}>
+				{activeObject && activeObject.pluralName}
+				</Typography>
 			
 				{/* <Typography sx={{ fontWeight: 500, fontSize: 16, my: "19px" }}>
 				Home {"  /  "} Settings {"  /  "} Objects {"  /  "} {activeObject?.singularName || "Custom object"}
